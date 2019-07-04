@@ -1,0 +1,13 @@
+<!DOCTYPE feed [
+<!ENTITY xxe SYSTEM "./src/main/resources/test.txt" >
+]>
+<feed>
+    <title>This is a simple ATOM feed</title>
+    <description>Test</description>
+
+    <entry>
+        <title>Test</title>
+        <link href="javascript:alert(11)"></link>
+        <content>&xxe;</content>
+    </entry>
+</feed>
