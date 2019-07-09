@@ -1,0 +1,333 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!-- $Id: jboss_xmbean_1_1.dtd 39447 2006-01-03 17:46:05Z dimitris $ -->
+
+<!-- This is the XML DTD for the JBoss MX 1.0 XMBean deployment descriptor.
+Author: Juha Lindfors
+Author: David Jencks
+Author: Matt Munz
+Author: Heiko W. Rupp
+Author: Dimitris Andreadis
+The DOCTYPE is:
+  <!DOCTYPE mbean PUBLIC
+      "-//JBoss//DTD JBOSS XMBEAN 1.1//EN"
+      "http://www.jboss.org/j2ee/dtd/jboss_xmbean_1_1.dtd">
+-->
+<!-- 
+  The mbean element is the root element of the document containing the
+  required elements for describing the management interface of one
+  MBean (constructors, attributes, operations and notifications). It
+  also includes an optional description element that can be used to
+  describe the purpose of the MBean and attributes for persistence
+  policy and attribute caching.
+-->
+<!ELEMENT mbean (description? , descriptors? , class , constructor*,
+ attribute* , operation* , notification*)>
+
+<!-- The class element specifies the fully qualifed name of the model MBean
+implementation class. This class will be exposed as a ModelMBean by the
+JMX implementation.
+-->
+<!ELEMENT class (#PCDATA)>
+
+<!--
+  The constructor element describes the constructors of an MBean
+  that are exposed to the management application. The optional
+  description element can be used to to describe the use of the
+  constructor.  
+-->
+<!ELEMENT constructor (description? , name , parameter* , descriptors?)>
+
+<!-- 
+  The attribute element describes the management attributes of an
+  MBean. The name element contains the attribute's name and the type
+  element contains a fully qualified class name of the attribute's
+  type.
+-->
+<!ELEMENT attribute (description? , name , type , descriptors?)>
+
+<!--  The access attribute defines the  read/write access modes of an attribute  -->
+<!ATTLIST attribute access     (read-only | write-only | read-write )  "read-write">
+
+<!--  The getMethod attribute defines the name of the method which reads
+the named attribute. This must be specified if the managed attribute should
+be obtained from the mbean instance. -->
+<!ATTLIST attribute getMethod CDATA  #IMPLIED>
+
+<!--  The setMethod attribute defines the name of the method which writes
+the named attribute. This must be specified if the managed attribute should
+be obtained from the mbean instance. -->
+<!ATTLIST attribute setMethod CDATA  #IMPLIED>
+
+<!-- 
+  The operation element describes a management operation of an MBean.
+  The name element contains the operation's name and the parameter
+  elements describe the operation's signature. The return-type element
+  must contain a fully qualified class name of the return type from
+  this operation.
+  
+  If return-type is not specified, void is assumed.
+-->
+<!ELEMENT operation (description? , name , parameter* , return-type? , descriptors?)>
+
+<!--  The impact attribute defines the impact of executing the operation and must be one of:
+	ACTION, The operation changes the state of the MBean component (write operation).
+	INFO, The operation should not alter the  state of the MBean component (read operation).
+	ACTION_INFO, The operation behaves like a  read/write operation.
+-->
+<!ATTLIST operation impact  (ACTION | INFO | ACTION_INFO )  "ACTION_INFO">
+
+<!--  The descriptors element contains all the descriptors for a containing element, as subelements.
+The descriptors suggested in the jmx spec have predefined elements, whereas custom descriptors have
+a generic element.
+-->
+<!ELEMENT descriptors (interceptors? , persistence? , currencyTimeLimit? ,
+display-name? , default? , value? , persistence-manager? , descriptor* , injection*)>
+
+<!-- The interceptors element specifies a customized stack of interceptors
+that will be used in place of the default stack. Currently this is only
+used when specified at the mbean level, but it could define a custom attribute
+or operation level interceptor stack in the future.
+-->
+<!ELEMENT interceptors (interceptor+)>
+
+<!-- The interceptor element specifies a custom interceptor stack to insert
+ahead of the standard ModelBean consisting of:
+   org.jboss.mx.interceptor.PersistenceInterceptor
+   org.jboss.mx.interceptor.MBeanAttributeInterceptor
+   org.jboss.mx.interceptor.ObjectReferenceInterceptor
+
+Each interceptor must implement the org.jboss.mx.interceptor.Interceptor
+interface, and must have either a no-arg constructor, or a constructor
+that accepts a javax.management.modelmbean.ModelMBeanInfo.
+-->
+<!ELEMENT interceptor ANY>
+
+<!ATTLIST interceptor  code CDATA  #REQUIRED >
+<!-- The persistence element contains descriptors for the persistPolicy,
+persistPeriod, persistLocation, and persistName properties suggested by the spec.
+-->
+<!ELEMENT persistence EMPTY>
+
+<!-- The persistPolicy defines how attributes should be persisted and must be one of:
+	Never, attribute values are transient values that are never persisted
+	OnUpdate, attribute values are persisted whenever they are updated
+	OnTimer, attribute values are persisted based on the time given by the persistPeriod.
+	NoMoreOftenThan, attribute values are persisted when updated unless but no more
+	oten than the persistPeriod.
+-->
+<!ATTLIST persistence persistPolicy (Never | OnUpdate | NoMoreOftenThan | OnTimer )  #IMPLIED>
+
+<!-- The persistPeriod attribute gives the update frequency in milliseconds if
+the perisitPolicy attribute is NoMoreOftenThan or OnTimer.
+-->
+<!ATTLIST persistence persistPeriod   CDATA  #IMPLIED>
+
+<!-- The persistLocation attribute specifies the location of the persistence
+store. Its form depends on the JMX implementation. Currently this should refer
+to a directory into which the attributes will be serialized.
+-->
+<!ATTLIST persistence persistLocation CDATA  #IMPLIED>
+
+<!-- The  persistName attribute can be used in conjunction with the
+persistLocation attribute to further qualify the persistent store location. For
+a directory persistLocation the persistName specifies the file to which the
+attributes are stored within the directory.
+-->
+<!ATTLIST persistence persistName     CDATA  #IMPLIED>
+
+<!-- The currencyTimeLimit element specifies the time in seconds that a cached
+value of an attribute remains valid.
+-->
+<!ELEMENT currencyTimeLimit EMPTY>
+
+<!--  The value attribute gives the  currencyTimeLimit in seconds. A 0 value
+indicates that an attribute value should always be retrieved from the mbean and
+never cached. A -1 value indicates that a cache value is always valid.
+-->
+<!ATTLIST currencyTimeLimit value CDATA  #IMPLIED>
+
+<!--  The displayName element specifies the human friendly name of an item
+ -->
+<!ELEMENT display-name EMPTY>
+
+<!--   The value attribute gives the string representation of the displayName
+ -->
+<!ATTLIST display-name value CDATA  #IMPLIED>
+
+<!-- The persistence-manager element give the name of a class to use as the
+persistence manager.
+ -->
+<!ELEMENT persistence-manager EMPTY>
+
+<!--  The value attribute specifies the class name that supplies the
+org.jboss.mx.persistence.PersistenceManager interface implementation.
+ -->
+<!ATTLIST persistence-manager value CDATA  #IMPLIED>
+
+<!-- The default element specifes a default value to use when a field has not
+been set.
+-->
+<!ELEMENT default EMPTY>
+
+<!--  The value  attribute  gives the default value representation
+-->
+<!ATTLIST default value CDATA  #REQUIRED>
+
+<!-- The value element specifies a management attribute's current value
+-->
+<!ELEMENT value EMPTY>
+
+<!--  The  value  (initial) value for attribute  -->
+<!ATTLIST value value CDATA  #REQUIRED>
+
+<!--  The  descriptor element
+-->
+<!ELEMENT descriptor EMPTY>
+
+<!-- The name attribute specifies the type of the descriptor.
+ -->
+<!ATTLIST descriptor name  CDATA  #REQUIRED>
+<!-- The value attribute specifies the descriptor value.
+-->
+<!ATTLIST descriptor value CDATA  #REQUIRED>
+
+<!-- The notification element describes a management notification. The name
+  element contains the fully qualified name of the notification class and
+  the notification-type element contains the dot-separated notification
+  type string.
+-->
+<!ELEMENT notification (description? , name , notification-type+ , descriptors?)>
+
+<!-- The parameter element specifies an operation parameter
+-->
+<!ELEMENT parameter (description? , name , type)>
+
+<!-- The name element is used to define the fundamental name of a component, such as the
+mbean JMX name, the name of an attribute, constructor, operation, notification, etc. This is a
+case-sensitive code centric name. For notifications the name if the class name of the event
+object, javax.management.Notification or a subclass.
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!-- The description element provides human readable descriptive text for constructors,
+attributes, operations, paramters, notifications, etc.
+-->
+<!ELEMENT description (#PCDATA)>
+
+<!-- The type element specifies a fully qualified name of a Java type.
+-->
+<!ELEMENT type (#PCDATA)>
+
+<!-- The return-type element specifies the return type of an operation. If not given or empty
+it is assumed to be the void type.
+-->
+<!ELEMENT return-type (#PCDATA)>
+
+<!-- The notification-type element speicifies the types of notifications that may be sent. These are
+the value that will be seen as the the javax.management.Notification.type attribute.
+-->
+<!ELEMENT notification-type (#PCDATA)>
+
+<!-- 
+  The injection element describes an injection point for receiving information
+  from the jmx microkernel. Each injection point specifies the type and
+  the resource setter method to use to inject the information into the
+  resource.
+-->
+<!ELEMENT injection EMPTY>
+
+<!-- 
+   The injection id attribute specifies the injection point type. The current
+   injection point types are:
+
+   MBeanServerType - the MBeanServer the XMBean is registered with. This requires
+      a setter with an x(javax.management.MBeanServer) signature.
+   MBeanInfoType - the XMBean ModelMBeanInfo metadata. This requires
+      a setter with an x(javax.management.MBeanInfo) signature.
+   ObjectNameType - the ObjectName the XMBean is registered under. This requires
+      a setter with an x(javax.management.ObjectName) signature.
+-->
+<!ATTLIST injection id (MBeanServerType | MBeanInfoType | ObjectNameType) #REQUIRED>
+
+<!--
+   The injection setMethod attribute gives the name of the method used to set
+   the injection value on the resource.
+-->
+<!ATTLIST injection setMethod CDATA #IMPLIED>
+
+<!-- 
+  provide entites for default MBean Operations and the three 
+  default MBean attributes
+-->
+<!ENTITY defaultOperations '
+<operation>
+ <description>Standard MBean lifecycle method</description>
+ <name>create</name>
+</operation>
+<operation>
+ <description>The start lifecycle operation</description>
+ <name>start</name>
+</operation>
+<operation>
+ <description>The stop lifecycle operation</description>
+ <name>stop</name>
+</operation>
+<operation>
+ <description>The destroy lifecycle operation</description>
+ <name>destroy</name>
+</operation>
+<operation>
+ <description>The detyped lifecycle operation (for internal use only)</description>
+ <name>jbossInternalLifecycle</name>
+ <parameter>
+  <description>The lifecycle operation</description>
+   <name>method</name>
+   <type>java.lang.String</type>
+ </parameter>
+ <return-type>void</return-type>
+</operation>
+'>
+
+<!ENTITY defaultAttributes '
+<attribute access="read-only" getMethod="getName">
+ <description>The class name of the MBean</description>
+ <name>Name</name>
+ <type>java.lang.String</type>
+</attribute>
+<attribute access="read-only" getMethod="getState">
+ <description>The status of the MBean</description>
+ <name>State</name>
+ <type>int</type>
+</attribute>
+<attribute access="read-only" getMethod="getStateString">
+ <description>The status of the MBean in text form</description>
+ <name>StateString</name>
+ <type>java.lang.String</type>
+</attribute>
+'>
+
+<!-- 
+  Methods to expose the Interceptable interface. Used in conjunction
+  with org.jboss.mx.interceptor.DynamicInterceptor
+-->
+<!ENTITY interceptable '
+<operation>
+ <description>Add dynamically an operation interceptor</description>
+ <name>addOperationInterceptor</name>
+ <parameter>
+  <description>The Interceptor</description>
+  <name>interceptor</name>
+  <type>org.jboss.mx.interceptor.Interceptor</type>
+ </parameter>
+</operation>
+<operation>
+ <description>Remove dynamically an operation interceptor</description>
+ <name>removeOperationInterceptor</name>
+ <parameter>
+  <description>The Interceptor</description>
+  <name>interceptor</name>
+  <type>org.jboss.mx.interceptor.Interceptor</type>
+ </parameter>
+</operation>
+'>         
