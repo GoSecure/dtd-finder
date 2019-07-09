@@ -7,56 +7,103 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream
 import org.apache.commons.io.IOUtils
 import java.io.ByteArrayInputStream
 import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.nio.charset.Charset
 
 
-fun isDtd(filename:String): Boolean {
+class DtdFinder(val reporter:XxeReporter) {
+
+
+    fun analyzingJar(zip: ByteArray, zipFile: String) {
+        val zipInputStream = ZipArchiveInputStream(ByteArrayInputStream(zip))
+
+        var zipEntry = zipInputStream.nextZipEntry
+        while (zipEntry != null) {
+
+            val fileName = zipEntry.name
+
+            if (!zipInputStream.canReadEntryData(zipEntry)) {
+                println("Unable to read $zipFile")
+            } else {
+
+                if (isDtd(zipEntry.name)) {
+
+
+                    val contentSize = if (zipEntry.size.toInt() != -1) zipEntry.size.toInt() else zipInputStream.available()
+                    var fileContent = ByteArray(contentSize)
+
+                    IOUtils.readFully(zipInputStream, fileContent)
+                    analyzeDtdFile(String(fileContent, Charset.forName("UTF-8")), zipFile + "!/" + fileName)
+
+
+                }
+            }
+            zipEntry = zipInputStream.nextZipEntry
+        }
+
+
+    }
+
+    fun analyzeDtdFile(content: String, fileName: String) {
+        val entityTester = EntityTester()
+
+        val dtdFile = File.createTempFile("tempDtd", ".dtd")
+        dtdFile.deleteOnExit()
+
+        IOUtils.write(content, FileOutputStream(dtdFile), Charset.forName("UTF-8"))
+        println("")
+        println(" [=] Found a DTD: /$fileName")
+
+        try {
+            val entitiesToTest = entityTester.listOverridableEntities(FileInputStream(dtdFile))
+            val entitiesMissing = entityTester.listMissingDeclaredEntities(FileInputStream(dtdFile))
+            entityTester.findInjectableEntity(dtdFile.canonicalPath, fileName, entitiesToTest, entitiesMissing, reporter)
+        } catch (e: Exception) {
+            println(" [X] Unable to load DTD: $fileName")
+            println(" [X] ${e.javaClass.name}: ${e.message}")
+        }
+    }
+
+}
+
+fun isDtd(filename: String): Boolean {
     return filename.endsWith(".dtd")
 }
 
-fun isJar(filename: String) : Boolean {
+fun isJar(filename: String): Boolean {
     return filename.endsWith(".jar")
-}
-
-fun analyzingJar(zip:ByteArray,file:String) {
-    val zipInputStream = ZipArchiveInputStream(ByteArrayInputStream(zip))
-
-    var zipEntry = zipInputStream.nextZipEntry
-    while (zipEntry != null) {
-
-        zipEntry.name
-
-        if(!zipInputStream.canReadEntryData(zipEntry)) {
-            println("Unable to read $file")
-        }else {
-
-            if(isDtd(zipEntry.name)) {
-                println(zipEntry.name)
-
-                zipEntry
-
-                var fileContent = ByteArray(zipEntry.size.toInt())
-                IOUtils.readFully(zipInputStream, fileContent)
-                println(String(fileContent))
-            }
-        }
-        zipEntry = zipInputStream.nextZipEntry
-    }
-
-
 }
 
 fun main(args: Array<String>) {
 
-    //val archive:String = args[0]
-    val archive = "C:\\Users\\parteau\\Desktop\\"+"02_jersey_deserialization_web_1.tar"
+    if(args.isEmpty()) {
+        help()
+    }
+    else {
+        val archive:String = args[0]
+        scanTarFile(archive)
+    }
+}
 
+fun help() {
+    println("DTD-Finder")
+    println("Usage: java -jar dtd-finder.jar {archive.tar}")
+    println("")
+}
 
+fun scanTarFile(archive:String) {
     val myTarFile = TarArchiveInputStream(FileInputStream(File(archive)))
+    val currentDir = System.getProperty("user.dir")
+
 
     var entry: TarArchiveEntry? = null
     var fileName: String
 
-    entry = myTarFile.nextTarEntry;
+    entry = myTarFile.nextTarEntry
+
+    val reportName = File(archive).name+"-dtd-report.md"
+    val dtdFinder = DtdFinder(MarkdownReporter(currentDir, reportName))
+
     while (entry != null) {
         fileName = entry.name
 
@@ -65,14 +112,11 @@ fun main(args: Array<String>) {
 
         if((isDtd(fileName) || isJar(fileName))) {
 
-            println("File Name : $fileName")
-            //println("Size of the File is: " + entry.size)
-            //println("Byte Array length: " + content.size)
-
-            //println(String(content).substring(0..5)) //Preview content
-
+            if(isDtd(fileName)) {
+                dtdFinder.analyzeDtdFile(String(content, Charset.forName("UTF-8")), fileName)
+            }
             if(isJar(fileName)) {
-                analyzingJar(content,entry.name)
+                dtdFinder.analyzingJar(content,entry.name)
             }
         }
 
@@ -80,4 +124,6 @@ fun main(args: Array<String>) {
     }
 
     myTarFile.close()
+    println("")
+    println("Report written to $reportName")
 }
