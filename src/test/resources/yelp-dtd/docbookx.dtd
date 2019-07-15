@@ -1,0 +1,76 @@
+<!ENTITY % ISOamsa PUBLIC
+"ISO 8879:1986//ENTITIES Added Math Symbols: Arrow Relations//EN//XML"
+"isoamsa.ent">
+<!ENTITY % ISOamsb PUBLIC
+"ISO 8879:1986//ENTITIES Added Math Symbols: Binary Operators//EN//XML"
+"isoamsb.ent">
+<!ENTITY % ISOamsc PUBLIC
+"ISO 8879:1986//ENTITIES Added Math Symbols: Delimiters//EN//XML"
+"isoamsc.ent">
+<!ENTITY % ISOamsn PUBLIC
+"ISO 8879:1986//ENTITIES Added Math Symbols: Negated Relations//EN//XML"
+"isoamsn.ent">
+<!ENTITY % ISOamso PUBLIC
+"ISO 8879:1986//ENTITIES Added Math Symbols: Ordinary//EN//XML"
+"isoamso.ent">
+<!ENTITY % ISOamsr PUBLIC
+"ISO 8879:1986//ENTITIES Added Math Symbols: Relations//EN//XML"
+"isoamsr.ent">
+<!ENTITY % ISObox PUBLIC
+"ISO 8879:1986//ENTITIES Box and Line Drawing//EN//XML"
+"isobox.ent">
+<!ENTITY % ISOcyr1 PUBLIC
+"ISO 8879:1986//ENTITIES Russian Cyrillic//EN//XML"
+"isocyr1.ent">
+<!ENTITY % ISOcyr2 PUBLIC
+"ISO 8879:1986//ENTITIES Non-Russian Cyrillic//EN//XML"
+"isocyr2.ent">
+<!ENTITY % ISOdia PUBLIC
+"ISO 8879:1986//ENTITIES Diacritical Marks//EN//XML"
+"isodia.ent">
+<!ENTITY % ISOgrk1 PUBLIC
+"ISO 8879:1986//ENTITIES Greek Letters//EN//XML"
+"isogrk1.ent">
+<!ENTITY % ISOgrk2 PUBLIC
+"ISO 8879:1986//ENTITIES Monotoniko Greek//EN//XML"
+"isogrk2.ent">
+<!ENTITY % ISOgrk3 PUBLIC
+"ISO 8879:1986//ENTITIES Greek Symbols//EN//XML"
+"isogrk3.ent">
+<!ENTITY % ISOgrk4 PUBLIC
+"ISO 8879:1986//ENTITIES Alternative Greek Symbols//EN//XML"
+"isogrk4.ent">
+<!ENTITY % ISOlat1 PUBLIC
+"ISO 8879:1986//ENTITIES Added Latin 1//EN//XML"
+"isolat1.ent">
+<!ENTITY % ISOlat2 PUBLIC
+"ISO 8879:1986//ENTITIES Added Latin 2//EN//XML"
+"isolat2.ent">
+<!ENTITY % ISOnum PUBLIC
+"ISO 8879:1986//ENTITIES Numeric and Special Graphic//EN//XML"
+"isonum.ent">
+<!ENTITY % ISOpub PUBLIC
+"ISO 8879:1986//ENTITIES Publishing//EN//XML"
+"isopub.ent">
+<!ENTITY % ISOtech PUBLIC
+"ISO 8879:1986//ENTITIES General Technical//EN//XML"
+"isotech.ent">
+%ISOamsa;
+%ISOamsb;
+%ISOamsc;
+%ISOamsn;
+%ISOamso;
+%ISOamsr;
+%ISObox;
+%ISOcyr1;
+%ISOcyr2;
+%ISOdia;
+%ISOgrk1;
+%ISOgrk2;
+%ISOgrk3;
+%ISOgrk4;
+%ISOlat1;
+%ISOlat2;
+%ISOnum;
+%ISOpub;
+%ISOtech;

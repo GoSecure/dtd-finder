@@ -1,0 +1,4 @@
+
+<!ENTITY % Directives "jsp:directive.page|jsp:directive.include">
+
+<!ENTITY % Body "(jsp:text|%Directives;|%Scripts;|%Actions;)*">

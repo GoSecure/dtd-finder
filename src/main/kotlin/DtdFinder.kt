@@ -56,8 +56,7 @@ class DtdFinder(val reporter:XxeReporter) {
 
         try {
             val entitiesToTest = entityTester.listOverridableEntities(FileInputStream(dtdFile))
-            val entitiesMissing = entityTester.listMissingDeclaredEntities(FileInputStream(dtdFile))
-            entityTester.findInjectableEntity(dtdFile.canonicalPath, fileName, entitiesToTest, entitiesMissing, reporter)
+            entityTester.findInjectableEntity(dtdFile.canonicalPath, fileName, entitiesToTest, reporter)
         } catch (e: Exception) {
             println(" [X] Unable to load DTD: $fileName")
             println(" [X] ${e.javaClass.name}: ${e.message}")
@@ -71,7 +70,7 @@ fun isDtd(filename: String): Boolean {
 }
 
 fun isJar(filename: String): Boolean {
-    return filename.endsWith(".jar")
+    return filename.endsWith(".jar") || filename.endsWith(".zip") || filename.endsWith(".war")
 }
 
 fun main(args: Array<String>) {

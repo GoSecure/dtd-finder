@@ -18,6 +18,13 @@ class EchoReporter: XxeReporter {
 
 }
 
+class QuietReporter: XxeReporter {
+
+    override fun newPayload(dtd: String,entityName:String, xmlPayload: String) {
+    }
+
+}
+
 
 class MarkdownReporter(outputDir:String, filename:String): XxeReporter {
 
