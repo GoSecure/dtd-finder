@@ -1,0 +1,146 @@
+<?xml encoding="UTF-8"?>
+
+<!ELEMENT ns1:config (ns1:latex|ns1:xslt|ns1:imagedata|ns1:options)*>
+<!ATTLIST ns1:config
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'
+  version CDATA #IMPLIED>
+
+<!--
+<latex> element and children syntaxes 
+
+-->
+
+<!ELEMENT ns1:latex (ns1:texinputs|ns1:bibinputs|ns1:bstinputs
+                     |ns1:backend|ns1:texstyle|ns1:texpost
+                     |ns1:indexstyle)*>
+<!ATTLIST ns1:latex
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
+
+<!ENTITY % attlist.modname "
+  use CDATA #REQUIRED">
+
+<!ENTITY % attlist.filepath "
+  fileref CDATA #REQUIRED">
+
+<!ENTITY % attlist.mod_or_file "
+  use CDATA #IMPLIED
+  fileref CDATA #IMPLIED">
+
+<!ELEMENT ns1:backend EMPTY>
+<!ATTLIST ns1:backend
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'
+  %attlist.modname;>
+
+<!ELEMENT ns1:texstyle EMPTY>
+<!ATTLIST ns1:texstyle
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'
+  %attlist.mod_or_file;>
+
+<!ELEMENT ns1:texpost EMPTY>
+<!ATTLIST ns1:texpost
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'
+  %attlist.mod_or_file;>
+
+<!ELEMENT ns1:indexstyle EMPTY>
+<!ATTLIST ns1:indexstyle
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'
+  %attlist.filepath;>
+
+<!ELEMENT ns1:texinputs (#PCDATA)>
+<!ATTLIST ns1:texinputs
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
+
+<!ELEMENT ns1:bibinputs (#PCDATA)>
+<!ATTLIST ns1:bibinputs
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
+
+<!ELEMENT ns1:bstinputs (#PCDATA)>
+<!ATTLIST ns1:bstinputs
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
+
+<!--
+<xslt> element and children syntaxes 
+
+-->
+
+<!ELEMENT ns1:xslt (ns1:stylesheet|ns1:engine)*>
+<!ATTLIST ns1:xslt
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
+
+<!ELEMENT ns1:stylesheet EMPTY>
+<!ATTLIST ns1:stylesheet
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'
+  %attlist.filepath;>
+
+<!ELEMENT ns1:engine (ns1:commandchain|ns1:command)?>
+<!ATTLIST ns1:engine
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
+
+<!ATTLIST ns1:engine
+  use CDATA #IMPLIED
+  param-format CDATA #IMPLIED>
+
+<!--
+<imagedata> element and children syntaxes 
+
+-->
+
+<!ELEMENT ns1:imagedata (ns1:figpath|ns1:figformat|ns1:formatrule
+                         |ns1:converter)*>
+<!ATTLIST ns1:imagedata
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
+
+<!ELEMENT ns1:figpath EMPTY>
+<!ATTLIST ns1:figpath
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'
+  %attlist.filepath;>
+
+<!ELEMENT ns1:figformat (#PCDATA)>
+<!ATTLIST ns1:figformat
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
+
+<!ELEMENT ns1:formatrule EMPTY>
+<!ATTLIST ns1:formatrule
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
+
+<!ATTLIST ns1:formatrule
+  dst CDATA #IMPLIED
+  docformat CDATA #IMPLIED
+  backend CDATA #IMPLIED>
+
+<!ELEMENT ns1:converter (ns1:commandchain|ns1:command)>
+<!ATTLIST ns1:converter
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
+
+<!ATTLIST ns1:converter
+  src CDATA #IMPLIED
+  dst CDATA #IMPLIED
+  docformat CDATA #IMPLIED
+  backend CDATA #IMPLIED>
+
+<!--
+General <command> syntax
+
+-->
+
+<!ELEMENT ns1:commandchain (ns1:command)+>
+<!ATTLIST ns1:commandchain
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
+
+<!ELEMENT ns1:command (#PCDATA)>
+<!ATTLIST ns1:command
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
+
+<!ATTLIST ns1:command
+  input CDATA #IMPLIED
+  output CDATA #IMPLIED
+  shell (0|1|false|true) #IMPLIED>
+
+<!--
+<options> syntax
+
+-->
+
+<!ELEMENT ns1:options (#PCDATA)>
+<!ATTLIST ns1:options
+  xmlns:ns1 CDATA #FIXED 'http://dblatex.sourceforge.net/config'>
