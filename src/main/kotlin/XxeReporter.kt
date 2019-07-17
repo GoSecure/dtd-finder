@@ -52,3 +52,25 @@ class MarkdownReporter(outputDir:String, filename:String): XxeReporter {
     }
 
 }
+
+class MarkdownCliReporter: XxeReporter {
+
+
+    override fun newPayload(dtd: String, entityName:String, xmlPayload: String) {
+        //println("DTD: $dtd")
+        //println("PAYLOAD: $xmlPayload")
+
+        println("**DTD File:** `$dtd`")
+        println("")
+        println("**Injectable entity:** `$entityName`")
+        println("")
+        println("**XXE Payload:**")
+        println("```")
+        println("$xmlPayload")
+        println("```")
+        println("")
+        println(" --- ")
+        println("")
+    }
+
+}
