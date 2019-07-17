@@ -2,6 +2,11 @@
 
 Identify DTDs on filesystem snapshot and build XXE payloads using those local DTDs.
 
+## Building the tool
+
+```
+$ mvn install
+```
 
 ## Usage with docker image
 
@@ -36,7 +41,7 @@ Testing 9 entities : [%AttributeName, %BeanName, %Boolean, %ClassName, %Integer,
 Report written to weblogic-12-dev.tar-dtd-report.md
 ```
 
-## Live demonstration
+## Demonstration
 
 ![dtd-finder demnonstration](demos/dtd-finder-demo-1.gif)
 
