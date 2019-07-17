@@ -50,12 +50,12 @@ class EntityTesterTest {
 
         assertCountInjectableEntityForDtd(13, "/jspxml.dtd")
 
-        // #6 ATTLIST
+        // #5 ATTLIST
         assertPayloadFoundForDtd("""
             <!ATTLIST attxx aa "bb
             """.trimIndent(),"/jspxml.dtd")
 
-        // #4 Open Parentheses in ELEMENT
+        // #3 Open Parentheses in ELEMENT
         assertPayloadFoundForDtd("""
             (aa)>
             """.trimIndent(),"/jspxml.dtd")
@@ -89,7 +89,7 @@ class EntityTesterTest {
     fun testSipApp() {
         assertCountInjectableEntityForDtd(1, "/sip-app_1_0.dtd")
 
-        // #5 Close Parentheses in ELEMENT
+        // #4 Close Parentheses in ELEMENT
         assertPayloadFoundForDtd("""
             aaa)>
             """.trimIndent(),"/sip-app_1_0.dtd")
