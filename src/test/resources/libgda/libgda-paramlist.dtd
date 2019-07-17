@@ -1,0 +1,40 @@
+<!--       libgda-paramlist.dtd
+	   DTD for GdaSet specifications
+	   Version 1.0
+	   Copyright (C) 2006 Vivien Malerba
+-->
+
+<!ENTITY % array-dtd SYSTEM "libgda-array.dtd">
+%array-dtd;
+
+<!ELEMENT data-set-spec (parameters, sources?)>
+
+<!ELEMENT parameters (parameter*)>
+<!ATTLIST parameters
+	  id NMTOKEN #IMPLIED
+	  name CDATA #IMPLIED
+	  xml:lang CDATA #IMPLIED
+	  descr CDATA #IMPLIED
+	  status (OPT|REQ) #IMPLIED>
+
+<!ELEMENT parameter (gda_value*, attribute*)>
+<!ATTLIST parameter
+	  id NMTOKEN #REQUIRED
+	  dbmstype NMTOKEN #IMPLIED
+	  gdatype NMTOKEN #IMPLIED
+	  name CDATA #IMPLIED
+	  xml:lang CDATA #IMPLIED
+	  descr CDATA #IMPLIED
+	  nullok (TRUE|FALSE) #IMPLIED
+	  plugin CDATA #IMPLIED
+	  source CDATA #IMPLIED
+	  hint CDATA #IMPLIED
+	  status (OPT|REQ) #IMPLIED>
+
+<!ELEMENT attribute (#PCDATA)>
+<!ATTLIST attribute
+	  name CDATA #REQUIRED>
+
+<!ELEMENT sources (gda_array*)>
+	  
+

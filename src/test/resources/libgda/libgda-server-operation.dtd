@@ -1,0 +1,24 @@
+<!--       libgda-server-operation.dtd
+	   DTD for GdaServerOperation specifications
+	   Version 1.0
+	   Copyright (C) 2006 Vivien Malerba
+-->
+
+<!ENTITY % paramlist-dtd SYSTEM "libgda-paramlist.dtd">
+%paramlist-dtd;
+
+<!ELEMENT serv_op ((parameters|gda_array|sequence|parameter)*, sources?)>
+<!ATTLIST serv_op
+	  type CDATA #IMPLIED
+	  descr CDATA #IMPLIED>
+
+<!ELEMENT sequence ((parameters|parameter|gda_array|sequence)*)>
+<!ATTLIST sequence
+	  id NMTOKEN #IMPLIED
+	  name CDATA #IMPLIED
+	  xml:lang CDATA #IMPLIED
+	  descr CDATA #IMPLIED
+	  minitems NMTOKEN #IMPLIED
+	  maxitems NMTOKEN #IMPLIED
+	  status (OPT|REQ) #IMPLIED>
+

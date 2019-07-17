@@ -1,0 +1,34 @@
+<!ELEMENT gweather (named-timezone*, region+) >
+<!ATTLIST gweather
+  format CDATA #FIXED '1.0' >
+
+<!ENTITY % name '(_name|name+)' >
+
+<!ELEMENT region (%name;, country+) >
+<!ELEMENT country (%name;, iso-code, fips-code+, pref-lang?, timezones, tz-hint?, (location|state|city)*) >
+<!ELEMENT state (%name;, fips-code+, tz-hint?, (location|city)*) >
+<!ELEMENT city (%name;, coordinates?, tz-hint?) >
+<!ELEMENT location (name, code, zone?, radar?, coordinates?) >
+<!ELEMENT named-timezone (%name;, timezones, tz-hint, code)>
+
+<!ELEMENT timezones (timezone+) >
+<!ELEMENT timezone (_name?, obsoletes*) >
+<!ATTLIST timezone
+  id CDATA #REQUIRED >
+<!ELEMENT obsoletes (#PCDATA) >
+
+<!ELEMENT _name (#PCDATA) >
+<!ATTLIST _name
+  msgctxt CDATA #IMPLIED >
+<!ELEMENT name (#PCDATA) >
+<!ATTLIST name
+  xml:lang CDATA #IMPLIED
+  msgctxt CDATA #IMPLIED >
+<!ELEMENT iso-code (#PCDATA) >
+<!ELEMENT fips-code (#PCDATA) >
+<!ELEMENT pref-lang (#PCDATA) >
+<!ELEMENT tz-hint (#PCDATA) >
+<!ELEMENT code (#PCDATA) >
+<!ELEMENT zone (#PCDATA) >
+<!ELEMENT radar (#PCDATA) >
+<!ELEMENT coordinates (#PCDATA) >
