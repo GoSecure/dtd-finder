@@ -67,6 +67,74 @@ class DtdFinder(val reporter:XxeReporter) {
         }
     }
 
+
+    fun scanDirectory(directory: File) {
+        println("Scanning direction ${directory.canonicalPath}")
+
+        val currentDir = System.getProperty("user.dir")
+
+        File(directory.canonicalPath).walkBottomUp().filter { it.isFile && (isDtd(it.name) || isJar(it.name)) }.forEach {
+            //println(it.canonicalPath)
+
+            val fileName = it.name
+
+            val content = Files.readAllBytes(Paths.get(it.canonicalPath))
+
+            if(isDtd(fileName)) {
+                analyzeDtdFile(String(content, Charset.forName("UTF-8")), it.canonicalPath)
+            }
+            if(isJar(fileName)) {
+                try {
+                    analyzingJar(content, it.canonicalPath)
+                }
+                catch(e:Exception) {
+                    println(" [!] Error occurs when load the jar $fileName")
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Will extract the file from a TAR archive.
+     * Path from archive will be considered to be the absolute path from the original filesystem.
+     */
+    fun scanTarFile(archive:File) {
+        val myTarFile = TarArchiveInputStream(FileInputStream(archive))
+
+
+        var entry: TarArchiveEntry? = null
+        var fileName: String
+
+        entry = myTarFile.nextTarEntry
+
+
+        while (entry != null) {
+            fileName = entry.name
+
+            val content = ByteArray(entry.size.toInt())
+            myTarFile.read(content, 0, content.size)
+
+            if((isDtd(fileName) || isJar(fileName))) {
+
+                if(isDtd(fileName)) {
+                    analyzeDtdFile(String(content, Charset.forName("UTF-8")), fileName)
+                }
+                if(isJar(fileName)) {
+                    try {
+                        analyzingJar(content,entry.name)
+                    }
+                    catch(e:Exception) {
+                        println(" [!] An error occurs when loading the jar ${entry.name} inside $fileName")
+                    }
+                }
+            }
+
+            entry = myTarFile.nextTarEntry
+        }
+
+        myTarFile.close()
+    }
 }
 
 fun isDtd(filename: String): Boolean {
@@ -82,6 +150,7 @@ fun isJar(filename: String): Boolean {
  */
 fun main(args: Array<String>) {
 
+    //Enable some limitation on where DTD can connect
     sandboxUrlHandler()
 
     if(args.isEmpty()) {
@@ -91,10 +160,17 @@ fun main(args: Array<String>) {
         val archive:String = args[0]
 
         val f = File(archive)
+        val currentDir = System.getProperty("user.dir")
+        val reportName = "${f.name}-dtd-report.md"
+        val dtdFinder = DtdFinder(MarkdownReporter(currentDir, reportName))
+
         if(f.isFile)
-            scanTarFile(f)
+            dtdFinder.scanTarFile(f)
         else
-            scanDirectory(f)
+            dtdFinder.scanDirectory(f)
+
+        println("")
+        println("Report written to $reportName")
     }
 }
 
@@ -132,76 +208,4 @@ fun help() {
     println(" -or-")
     println("Usage: java -jar dtd-finder.jar {directory}")
     println("")
-}
-
-
-fun scanDirectory(directory: File) {
-    println("Scanning direction ${directory.canonicalPath}")
-
-    val currentDir = System.getProperty("user.dir")
-    val reportName = "${directory.name}-dtd-report.md"
-    val dtdFinder = DtdFinder(MarkdownReporter(currentDir, reportName))
-
-    File(directory.canonicalPath).walkBottomUp().filter { it.isFile && (isDtd(it.name) || isJar(it.name)) }.forEach {
-        //println(it.canonicalPath)
-
-        val fileName = it.name
-
-        val content = Files.readAllBytes(Paths.get(it.canonicalPath))
-
-        if(isDtd(fileName)) {
-            dtdFinder.analyzeDtdFile(String(content, Charset.forName("UTF-8")), it.canonicalPath)
-        }
-        if(isJar(fileName)) {
-            try {
-                dtdFinder.analyzingJar(content, it.canonicalPath)
-            }
-            catch(e:Exception) {
-                println(" [!] Error occurs when load the jar $fileName")
-            }
-        }
-    }
-
-}
-
-fun scanTarFile(archive:File) {
-    val myTarFile = TarArchiveInputStream(FileInputStream(archive))
-    val currentDir = System.getProperty("user.dir")
-
-
-    var entry: TarArchiveEntry? = null
-    var fileName: String
-
-    entry = myTarFile.nextTarEntry
-
-    val reportName = "${archive.name}-dtd-report.md"
-    val dtdFinder = DtdFinder(MarkdownReporter(currentDir, reportName))
-
-    while (entry != null) {
-        fileName = entry.name
-
-        val content = ByteArray(entry.size.toInt())
-        myTarFile.read(content, 0, content.size)
-
-        if((isDtd(fileName) || isJar(fileName))) {
-
-            if(isDtd(fileName)) {
-                dtdFinder.analyzeDtdFile(String(content, Charset.forName("UTF-8")), fileName)
-            }
-            if(isJar(fileName)) {
-                try {
-                dtdFinder.analyzingJar(content,entry.name)
-                }
-                catch(e:Exception) {
-                    println(" [!] An error occurs when loading the jar ${entry.name} inside $fileName")
-                }
-            }
-        }
-
-        entry = myTarFile.nextTarEntry
-    }
-
-    myTarFile.close()
-    println("")
-    println("Report written to $reportName")
 }
