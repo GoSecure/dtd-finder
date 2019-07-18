@@ -61,3 +61,9 @@
 /usr/share/struts/struts-config_1_2.dtd
 /usr/share/struts/struts-config_1_3.dtd
 /usr/share/struts/struts-config_1_4.dtd
+/usr/share/maven-repo/
+./.m2/repository
+../.m2/repository
+../../.m2/repository
+../../../.m2/repository
+../../../../.m2/repository

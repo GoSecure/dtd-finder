@@ -1,3 +1,5 @@
+# XXE payloads for specific DTDs
+
 **DTD File:** `C:\Windows\System32\wbem\xml\cim20.dtd`
 
 **Injectable entity:** `%CIMName`
