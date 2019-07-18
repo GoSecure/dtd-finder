@@ -9,6 +9,10 @@ import java.io.ByteArrayInputStream
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.charset.Charset
+import java.nio.file.Paths
+import java.nio.file.Files
+import java.io.IOException
+import java.net.*
 
 
 class DtdFinder(val reporter:XxeReporter) {
@@ -73,25 +77,95 @@ fun isJar(filename: String): Boolean {
     return filename.endsWith(".jar") || filename.endsWith(".zip") || filename.endsWith(".war")
 }
 
+/**
+ * Entry for the CLI
+ */
 fun main(args: Array<String>) {
+
+    sandboxUrlHandler()
 
     if(args.isEmpty()) {
         help()
     }
     else {
         val archive:String = args[0]
-        scanTarFile(archive)
+
+        val f = File(archive)
+        if(f.isFile)
+            scanTarFile(f)
+        else
+            scanDirectory(f)
     }
+}
+
+/**
+ * Few DTDs attempt to import external DTDs.
+ * Those external DTDs could be a requirements to properly loading some components.
+ * However, few are broken URL for which connection will timeout.
+ */
+fun sandboxUrlHandler() {
+
+    URL.setURLStreamHandlerFactory(URLStreamHandlerFactory { protocol ->
+        if (arrayOf("http","https").contains(protocol) ) {
+            object:sun.net.www.protocol.http.Handler() {
+                @Throws(IOException::class)
+                override fun openConnection(url: URL): URLConnection {
+                    //println(" [X] Blocking access to $url")
+                    return javaClass.getResource("/empty.txt").openConnection()
+                }
+            }
+
+        }
+        else if (arrayOf("file").contains(protocol) ) {
+            sun.net.www.protocol.file.Handler()
+        }
+        else {
+            null
+        }
+    });
+
 }
 
 fun help() {
     println("DTD-Finder")
     println("Usage: java -jar dtd-finder.jar {archive.tar}")
+    println(" -or-")
+    println("Usage: java -jar dtd-finder.jar {directory}")
     println("")
 }
 
-fun scanTarFile(archive:String) {
-    val myTarFile = TarArchiveInputStream(FileInputStream(File(archive)))
+
+fun scanDirectory(directory: File) {
+    println("Scanning direction ${directory.canonicalPath}")
+
+    val currentDir = System.getProperty("user.dir")
+    val reportName = "${directory.name}-dtd-report.md"
+    val dtdFinder = DtdFinder(MarkdownReporter(currentDir, reportName))
+
+    File(directory.canonicalPath).walkBottomUp().filter { it.isFile && (isDtd(it.name) || isJar(it.name)) }.forEach {
+        //println(it.canonicalPath)
+
+        val fileName = it.name
+
+        val content = Files.readAllBytes(Paths.get(it.canonicalPath))
+
+        if(isDtd(fileName)) {
+            dtdFinder.analyzeDtdFile(String(content, Charset.forName("UTF-8")), it.canonicalPath)
+        }
+        if(isJar(fileName)) {
+            try {
+                dtdFinder.analyzingJar(content, it.canonicalPath)
+            }
+            catch(e:Exception) {
+                println(" [!] Error occurs when load the jar $fileName")
+            }
+        }
+    }
+
+}
+
+fun scanTarFile(archive:File) {
+    val myTarFile = TarArchiveInputStream(FileInputStream(archive))
     val currentDir = System.getProperty("user.dir")
 
 
@@ -100,7 +174,7 @@ fun scanTarFile(archive:String) {
 
     entry = myTarFile.nextTarEntry
 
-    val reportName = File(archive).name+"-dtd-report.md"
+    val reportName = "${archive.name}-dtd-report.md"
     val dtdFinder = DtdFinder(MarkdownReporter(currentDir, reportName))
 
     while (entry != null) {
@@ -115,7 +189,12 @@ fun scanTarFile(archive:String) {
                 dtdFinder.analyzeDtdFile(String(content, Charset.forName("UTF-8")), fileName)
             }
             if(isJar(fileName)) {
+                try {
                 dtdFinder.analyzingJar(content,entry.name)
+                }
+                catch(e:Exception) {
+                    println(" [!] An error occurs when loading the jar ${entry.name} inside $fileName")
+                }
             }
         }
 
