@@ -3,31 +3,32 @@ import com.sun.org.apache.xerces.internal.impl.dtd.*
 import javax.xml.parsers.DocumentBuilderFactory
 
 import org.xml.sax.InputSource;
-import com.sun.org.apache.xerces.internal.util.SAXInputSource;
-import com.sun.org.apache.xerces.internal.xni.parser.XMLEntityResolver
+import com.sun.org.apache.xerces.internal.util.SAXInputSource
 import com.sun.org.apache.xerces.internal.xni.parser.XMLErrorHandler
-import com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource
 import com.sun.org.apache.xerces.internal.xni.parser.XMLParseException
-import org.w3c.dom.Document
 import org.xml.sax.ErrorHandler
 import org.xml.sax.SAXParseException
 import java.io.*
 
 class EntityTester {
 
-
+    /**
+     * Parse the DTD file and identify the entities that are declared in this
+     */
     fun listOverridableEntities(dtdStream: InputStream): ArrayList<String> {
-        val inputSource = InputSource(InputStreamReader(dtdStream))
-        val source = SAXInputSource(inputSource)
-        val d = XMLDTDLoader()
 
+        val source = SAXInputSource(InputSource(InputStreamReader(dtdStream)))
+        val d =  XMLDTDLoader()
 
-        d.entityResolver = XMLEntityResolver { resourceIdentifier ->
-            //return XMLInputSource(resourceIdentifier);
-            if(resourceIdentifier != null) {
-                XMLInputSource(resourceIdentifier.publicId, resourceIdentifier.baseSystemId, resourceIdentifier.baseSystemId)
-            } else {
-                XMLInputSource("a","b","c")
+        //Will hide mostly "The entity "p" was referenced, but not declared"
+        d.errorHandler = object: XMLErrorHandler {
+            override fun warning(domain: String?, key: String?, exception: XMLParseException) {
+            }
+
+            override fun error(domain: String?, key: String?, exception: XMLParseException) {
+            }
+
+            override fun fatalError(domain: String?, key: String?, exception: XMLParseException) {
             }
         }
 
@@ -40,7 +41,6 @@ class EntityTester {
         val entityDecl = XMLEntityDecl()
         while (g.getEntityDecl(entityIndex++, entityDecl)) {
             entitiesFound.add(entityDecl.name)
-            //println(entityDecl.name)
         }
         return entitiesFound
     }
@@ -88,7 +88,7 @@ class EntityTester {
 
         for(entity in entitiesToTests) {
             val entityName = entity.replace("%","")
-            //val xmlFile = String().javaClass.getResourceAsStream("/input.xml")
+
             val magicValue = "INJECTION_12345"
 
             //#1 Inline
@@ -200,6 +200,7 @@ class EntityTester {
                         payloadClean = payloadClean.replace(dtdFullPath,originalPath).trim()
                         reporter.newPayload("/$originalPath", entity, payloadClean)
 
+                        //return
                         //println("Payload used:")
                         //println(payload)
                     }
