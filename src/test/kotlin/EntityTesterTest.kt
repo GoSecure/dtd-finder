@@ -14,7 +14,7 @@ class EntityTesterTest {
 
         var entitiesInjectable = HashSet<String>()
 
-        val entitiesToTest = entityTester.listOverridableEntities(dtdFileURL.openStream())
+        val entitiesToTest = entityTester.listOverridableEntities(dtdFileURL)
         entityTester.findInjectableEntity(dtdFileURL.path,dtdFileURL.path,entitiesToTest, object : XxeReporter {
             override fun newPayload(dtd: String, entityName: String, xmlPayload: String) {
                 entitiesInjectable.add(entityName)
@@ -33,7 +33,7 @@ class EntityTesterTest {
 
         var payloadFound = false
 
-        val entitiesToTest = entityTester.listOverridableEntities(dtdFileURL.openStream())
+        val entitiesToTest = entityTester.listOverridableEntities(dtdFileURL)
         entityTester.findInjectableEntity(dtdFileURL.path,dtdFileURL.path,entitiesToTest, object : XxeReporter {
             override fun newPayload(dtd: String, entityName: String, xmlPayload: String) {
                 if(xmlPayload.contains(payload)) {
@@ -106,6 +106,15 @@ class EntityTesterTest {
     @Test
     fun testCim() {
         assertCountInjectableEntityForDtd(9, "/cim20.dtd")
+    }
+
+    @Test
+    fun testServletApi() {
+        //This DTD is very common in JAR dependencies. It point to a second DTD.
+        //It cause failure during the DTD parsing with Xerces.
+        //This test validate the fallback where entities are extracted with RegEx.
+
+        assertCountInjectableEntityForDtd(34, "/servlet-api/XMLSchema.dtd")
     }
 
 }

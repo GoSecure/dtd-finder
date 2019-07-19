@@ -9,13 +9,37 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLParseException
 import org.xml.sax.ErrorHandler
 import org.xml.sax.SAXParseException
 import java.io.*
+import java.net.URL
 
 class EntityTester {
+
+
+    val ENTITY_REGEX = Regex(".*<!ENTITY\\s+%?\\s*([a-zA-Z\\-_]+)\\s.*")
+
+
+    fun listOverridableEntities(dtdFile:String): ArrayList<String> {
+        return try {
+            listOverridableEntitiesXerces(FileInputStream(dtdFile))
+        } catch (e: XMLParseException) {
+            listOverridableEntitiesWithRegex(FileInputStream(dtdFile))
+        }
+    }
+
+    /**
+     * Used to supported load DTD file from the classpath (for tests)
+     */
+    fun listOverridableEntities(dtdFile: URL): ArrayList<String> {
+        return try {
+            listOverridableEntitiesXerces(dtdFile.openStream())
+        } catch (e: XMLParseException) {
+            listOverridableEntitiesWithRegex(dtdFile.openStream())
+        }
+    }
 
     /**
      * Parse the DTD file and identify the entities that are declared in this
      */
-    fun listOverridableEntities(dtdStream: InputStream): ArrayList<String> {
+    fun listOverridableEntitiesXerces(dtdStream: InputStream): ArrayList<String> {
 
         val source = SAXInputSource(InputSource(InputStreamReader(dtdStream)))
         val d =  XMLDTDLoader()
@@ -32,6 +56,7 @@ class EntityTester {
             }
         }
 
+
         val g = d.loadGrammar(source) as DTDGrammar
 
         val entitiesFound = ArrayList<String>()
@@ -40,9 +65,29 @@ class EntityTester {
         var entityIndex = 0
         val entityDecl = XMLEntityDecl()
         while (g.getEntityDecl(entityIndex++, entityDecl)) {
-            entitiesFound.add(entityDecl.name)
+            entitiesFound.add(entityDecl.name.replace("%", ""))
         }
         return entitiesFound
+
+
+    }
+
+    fun listOverridableEntitiesWithRegex(inputStream: InputStream): ArrayList<String> {
+
+        val reader = InputStreamReader(inputStream)
+
+        val entities = arrayListOf<String>()
+        reader.forEachLine {line ->
+            //println(line)
+            val res = ENTITY_REGEX.find(line)
+            if (res?.groupValues != null) {
+                val e = res.groupValues[1]
+                //println(res.groupValues[0])
+                entities.add(e)
+            }
+        }
+
+        return entities
     }
 
     fun findInjectableEntity(dtdFullPath:String, originalPath:String, entitiesToTests:ArrayList<String>, reporter:XxeReporter) {
@@ -206,7 +251,7 @@ class EntityTester {
                     }
                 } catch (e: Exception) {
                     //Failed
-                    //println(" [!] $e.message")
+//                    println(" [!] $e.message")
                     ///e.printStackTrace()
                 }
             }

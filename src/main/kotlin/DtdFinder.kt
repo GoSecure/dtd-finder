@@ -1,4 +1,5 @@
 
+import com.sun.org.apache.xerces.internal.xni.parser.XMLParseException
 import java.io.File
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
@@ -59,7 +60,7 @@ class DtdFinder(val reporter:XxeReporter) {
         println(" [=] Found a DTD: /$fileName")
 
         try {
-            val entitiesToTest = entityTester.listOverridableEntities(FileInputStream(dtdFile))
+            val entitiesToTest = entityTester.listOverridableEntities(dtdFile.canonicalPath)
             entityTester.findInjectableEntity(dtdFile.canonicalPath, fileName, entitiesToTest, reporter)
         } catch (e: Exception) {
             println(" [X] Unable to load DTD: $fileName")
@@ -137,11 +138,11 @@ class DtdFinder(val reporter:XxeReporter) {
     }
 }
 
-fun isDtd(filename: String): Boolean {
+inline fun isDtd(filename: String): Boolean {
     return filename.endsWith(".dtd")
 }
 
-fun isJar(filename: String): Boolean {
+inline fun isJar(filename: String): Boolean {
     return filename.endsWith(".jar") || filename.endsWith(".zip") || filename.endsWith(".war")
 }
 
