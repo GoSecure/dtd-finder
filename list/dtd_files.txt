@@ -67,3 +67,10 @@
 ../../.m2/repository
 ../../../.m2/repository
 ../../../../.m2/repository
+/C:\Windows\System32\wbem\xml\cim20.dtd
+/C:\Windows\System32\wbem\xml\wmi20.dtd
+/C:\Windows\System32\xwizard.dtd
+/C:\Windows\SysWOW64\wbem\xml\cim20.dtd
+/C:\Windows\SysWOW64\wbem\xml\wmi20.dtd
+/C:\Windows\SysWOW64\xwizard.dtd
+/C:\Program Files (x86)\Lotus\Notes\domino.dtd
