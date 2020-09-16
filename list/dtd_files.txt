@@ -65,6 +65,16 @@
 /usr/share/sgml/dtd/xml-core/catalog.dtd
 /usr/share/xml/schema/xml-core/catalog.dtd
 /etc/vmware-tools/vgauth/schemas/XMLSchema.dtd
+/usr/share/perfsuite/dtds/pshwpc/hwpcprofilereport-0.2.dtd
+/usr/share/perfsuite/dtds/pshwpc/hwpcprofilereport-0.3.dtd
+/usr/share/perfsuite/dtds/pshwpc/hwpcprofilereport.dtd
+/usr/share/perfsuite/dtds/pshwpc/hwpcreport-0.3.dtd
+/usr/share/perfsuite/dtds/pshwpc/hwpcreport.dtd
+/usr/share/perfsuite/dtds/pshwpc/multihwpcprofilereport-0.2.dtd
+/usr/share/perfsuite/dtds/pshwpc/multihwpcprofilereport-0.3.dtd
+/usr/share/perfsuite/dtds/pshwpc/multihwpcreport-0.3.dtd
+/usr/share/perfsuite/dtds/pshwpc/multihwpcreport.dtd
+/usr/share/perfsuite/dtds/pshwpc/psmetrics.dtd
 ./.m2/repository
 ../.m2/repository
 ../../.m2/repository
