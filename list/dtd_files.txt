@@ -62,6 +62,9 @@
 /usr/share/struts/struts-config_1_3.dtd
 /usr/share/struts/struts-config_1_4.dtd
 /usr/share/maven-repo/
+/usr/share/sgml/dtd/xml-core/catalog.dtd
+/usr/share/xml/schema/xml-core/catalog.dtd
+/etc/vmware-tools/vgauth/schemas/XMLSchema.dtd
 ./.m2/repository
 ../.m2/repository
 ../../.m2/repository
