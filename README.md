@@ -2,6 +2,8 @@
 
 Identify DTDs on filesystem snapshot and build XXE payloads using those local DTDs.
 
+For more information, read the detailed blog post: https://www.gosecure.net/blog/2019/07/16/automating-local-dtd-discovery-for-xxe-exploitation/
+
 ## Building the tool
 
 ```
