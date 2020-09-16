@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
             val dtdPath = EntityTesterTest().javaClass.getResource(dtd).path
             val entityTester = EntityTester()
 
-            val entitiesToTest = entityTester.listOverridableEntities(FileInputStream(dtdPath))
+            val entitiesToTest = entityTester.listOverridableEntitiesXerces(FileInputStream(dtdPath))
             entityTester.findInjectableEntity(dtdPath,dtdPath,entitiesToTest,EchoReporter())
         }
         catch (e:Exception) {
