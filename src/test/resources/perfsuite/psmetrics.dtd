@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ==================================================
+     DTD for PerfSuite metric definition files for 
+     hardware performance events (psmetrics).
+     ================================================== -->
+
+<!-- ==================================================
+     A metric is an expression that is composed of
+     operators and data, where data is the value of a
+     performance counter, a CPU characteristic, or a
+     constant.  It has a name and one or more text
+     descriptions associated with it.
+     ================================================== -->
+
+<!ENTITY % op   "plus | minus | times | divide | abs">
+<!ENTITY % data "ci | cn">
+<!ENTITY % expr "(%op; | %data;)">
+
+<!ELEMENT psmetrics (metric*)>
+<!ATTLIST psmetrics 
+          class CDATA #REQUIRED
+>
+
+<!ELEMENT metric (name, description+, definition)>
+<!ATTLIST metric
+          namespace CDATA #REQUIRED
+          type CDATA #IMPLIED
+>
+
+<!ELEMENT name (#PCDATA)>
+
+<!ELEMENT description (#PCDATA)>
+<!ATTLIST description
+          lang CDATA "en_US"
+>
+
+<!ELEMENT definition (apply)>
+
+<!ELEMENT apply (%expr;)>
+
+<!-- ==================================================
+     Acceptable operators, which are all either binary
+     or unary.
+     ================================================== -->
+
+<!ELEMENT plus (%expr;,%expr;)>
+
+<!ELEMENT minus (%expr;,%expr;)>
+
+<!ELEMENT times (%expr;,%expr;)>
+
+<!ELEMENT divide (%expr;,%expr;)>
+
+<!ELEMENT abs %expr;>
+
+<!-- ==================================================
+     A <ci> element is subject to substitution, either
+     with the value of the performance counter named
+     in its content or one of several keywords:
+     - cpusecs
+     - wallsecs
+     - lNcacheline (N indicates the cache line size at
+                    level N)
+     ================================================== -->
+
+<!ELEMENT ci (#PCDATA)>
+
+<!-- ==================================================
+     A <cn> element is a constant that is passed to the
+     expression evaluator unchanged.
+     ================================================== -->
+
+<!ELEMENT cn (#PCDATA)>

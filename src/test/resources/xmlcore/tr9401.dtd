@@ -1,0 +1,123 @@
+<!-- $Id: tr9401.dtd,v 1.1 2004/02/28 22:04:34 ardo Exp $ -->
+<!-- 
+        This dtd is a customization layer that provides additional elements 
+        to the (Non-Normative) OASIS XML Catalog Standard DTD to support the 
+        full semantics of the OASIS TR9401:97 Catalog Standard.
+
+        Specifically, it adds the following elements to the DTD: 
+                'doctype' 'document' 'dtddecl' 'entity' 
+                'linktype' 'notation' 'sgmldecl'
+
+        As recommended by the XML Catalog Standard, these additional elements 
+        are implemented as extension elements in the namespace:
+            "urn:oasis:names:tc:entity:xmlns:tr9401:catalog"
+        using the "soc:" namespace prefix.
+
+        The (Non-Normative) DTD for the OASIS XML Catalog is available at 
+        http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd
+
+        The OASIS XML Catalog Standard is available at
+    http://www.oasis-open.org/committees/entity/specs/cs-entity-xml-catalogs-1.0.html
+
+Usage:
+
+        This dtd is identified by the following:
+
+PUBLIC "-//GlobalTransCorp//DTD XML Catalogs V1.0-Based Extension V1.0//EN"
+        
+SYSTEM  "http://globaltranscorp.org/oasis/catalog/xml/tr9401.dtd"
+
+ A typical document instance might use the following DOCTYPE statement:
+
+   <!DOCTYPE catalog
+      PUBLIC "-//GlobalTransCorp//DTD XML Catalogs V1.0-Based Extension V1.0//EN"
+        "http://globaltranscorp.org/oasis/catalog/xml/tr9401.dtd">
+
+        Comments or complaints should be sent to Mark Johnson <mrj@debian.org>
+
+-->
+
+<!ENTITY % nspre "soc:">
+<!ENTITY % nspre-s ":soc">
+<!ENTITY % ns-dec "xmlns%nspre-s;">
+
+<!ENTITY % uriReference "CDATA">
+
+<!ENTITY % doctype  "%nspre;doctype">
+<!ENTITY % document "%nspre;document">
+<!ENTITY % dtddecl  "%nspre;dtddecl">
+<!ENTITY % entity   "%nspre;entity">
+<!ENTITY % linktype "%nspre;linktype">
+<!ENTITY % notation "%nspre;notation">
+<!ENTITY % sgmldecl "%nspre;sgmldecl">
+
+
+<!ENTITY % local.catalog.attribs  "%ns-dec; %uriReference; #FIXED
+                'urn:oasis:names:tc:entity:xmlns:tr9401:catalog'"> 
+
+<!ENTITY % local.catalog.mix  "|%doctype;|%document;|%dtddecl;
+                               |%entity;|%linktype;
+                               |%notation;|%sgmldecl;">
+
+<!ENTITY % catalog.dtd PUBLIC "-//OASIS//DTD XML Catalogs V1.0//EN"
+"catalog.dtd">
+     <!-- "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd"> -->
+ %catalog.dtd; 
+
+
+<!-- Below are the new elements -->
+
+<!ELEMENT %doctype; EMPTY>
+<!ATTLIST %doctype;
+        id              ID                      #IMPLIED
+        name            CDATA                   #REQUIRED
+        uri             %uriReference;          #REQUIRED
+        xml:base        %uriReference;          #IMPLIED
+>
+
+<!ELEMENT %document; EMPTY>
+<!ATTLIST %document;
+        id              ID                      #IMPLIED
+        uri             %uriReference;          #REQUIRED
+        xml:base        %uriReference;          #IMPLIED
+>
+
+<!ELEMENT %dtddecl; EMPTY>
+<!ATTLIST %dtddecl;
+        id              ID                      #IMPLIED
+        publicId        %publicIdentifier;      #REQUIRED
+        uri             %uriReference;          #REQUIRED
+        xml:base        %uriReference;          #IMPLIED
+>
+
+<!ELEMENT %entity; EMPTY>
+<!ATTLIST %entity;
+        id              ID                      #IMPLIED
+        name            CDATA                   #REQUIRED
+        uri             %uriReference;          #REQUIRED
+        xml:base        %uriReference;          #IMPLIED
+>
+
+<!ELEMENT %linktype; EMPTY>
+<!ATTLIST %linktype;
+        id              ID                      #IMPLIED
+        name            CDATA                   #REQUIRED
+        uri             %uriReference;          #REQUIRED
+        xml:base        %uriReference;          #IMPLIED
+>
+
+<!ELEMENT %notation; EMPTY>
+<!ATTLIST %notation;
+        id              ID                      #IMPLIED
+        name            CDATA                   #REQUIRED
+        uri             %uriReference;          #REQUIRED
+        xml:base        %uriReference;          #IMPLIED
+>
+
+<!ELEMENT %sgmldecl; EMPTY>
+<!ATTLIST %sgmldecl;
+        id              ID                      #IMPLIED
+        uri             %uriReference;          #REQUIRED
+        xml:base        %uriReference;          #IMPLIED
+>
+

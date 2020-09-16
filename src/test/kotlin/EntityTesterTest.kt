@@ -117,4 +117,48 @@ class EntityTesterTest {
         assertCountInjectableEntityForDtd(34, "/servlet-api/XMLSchema.dtd")
     }
 
+    @Test
+    fun testXmlCore() {
+        assertCountInjectableEntityForDtd(27, "/xmlcore/catalog.dtd")
+
+        // #2 Simple ELEMENT injection inside tag
+        assertPayloadFoundForDtd("""
+            <!ENTITY % partialPublicIdentifier '
+            """.trimIndent(), "/xmlcore/catalog.dtd")
+
+
+    }
+
+
+    @Test
+    fun testWiresharkSmil() {
+        //FIXME: Find a pattern of injection for this file
+        assertCountInjectableEntityForDtd(0, "/wireshark/smil.dtd")
+    }
+
+    @Test
+    fun testPerfsuite() {
+        assertCountInjectableEntityForDtd(1, "/perfsuite/hwpcreport.dtd")
+        assertCountInjectableEntityForDtd(1, "/perfsuite/hwpcreport-0.3.dtd")
+
+        assertPayloadFoundForDtd("""
+            <!ENTITY % machineinfo.dtd '
+            """.trimIndent(), "/perfsuite/hwpcreport.dtd")
+
+        assertCountInjectableEntityForDtd(1, "/perfsuite/hwpcprofilereport.dtd")
+        assertCountInjectableEntityForDtd(1, "/perfsuite/hwpcprofilereport-0.2.dtd")
+        assertCountInjectableEntityForDtd(1, "/perfsuite/hwpcprofilereport-0.3.dtd")
+
+
+        assertPayloadFoundForDtd("""
+            <!ENTITY % machineinfo.dtd '
+            """.trimIndent(), "/perfsuite/hwpcprofilereport.dtd")
+
+        assertCountInjectableEntityForDtd(1, "/perfsuite/multihwpcreport.dtd")
+        assertCountInjectableEntityForDtd(1, "/perfsuite/multihwpcreport-0.3.dtd")
+
+        assertPayloadFoundForDtd("""
+            <!ENTITY % hwpcreport.dtd '
+            """.trimIndent(), "/perfsuite/multihwpcreport.dtd")
+    }
 }

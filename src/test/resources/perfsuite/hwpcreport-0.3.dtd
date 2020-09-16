@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- =========================================
+     NOTE: this is a machine-generated DTD that
+     is still undergoing development.  It is
+     likely to contain errors and omissions.
+     You should regard this as unofficial and
+     untested at this time.
+
+     Comments/feedback/contributions welcome.
+     ========================================= -->
+
+<!ENTITY % machineinfo.dtd
+    SYSTEM "/usr/share/perfsuite/dtds/pshwpc/machineinfo-0.3.dtd">
+
+%machineinfo.dtd;
+
+<!ELEMENT hwpcreport ( date,
+                       hostname,
+                       domainname,
+                       pid?,
+                       thread?,
+                       username?,
+                       command?,
+                       annotation?,
+                       wallclock,
+                       cputime,
+                       machineinfo?,
+                      (hwpceventdata | hwpcprofiledata)
+                     )
+>
+<!ATTLIST hwpcreport
+          version CDATA #REQUIRED
+          generator CDATA #IMPLIED
+          mode (count | profile) "count"
+          xmlns:perfsuite CDATA #IMPLIED
+>
+
+<!ELEMENT date (#PCDATA)>
+
+<!ELEMENT hostname (#PCDATA)>
+
+<!ELEMENT domainname (#PCDATA)>
+
+<!ELEMENT pid (#PCDATA)>
+
+<!ELEMENT thread (#PCDATA)>
+
+<!ELEMENT username (#PCDATA)>
+
+<!ELEMENT command (#PCDATA)>
+<!ATTLIST command md5sum CDATA #IMPLIED>
+
+<!ELEMENT annotation (#PCDATA)>
+
+<!ELEMENT wallclock (#PCDATA)>
+<!ATTLIST wallclock units (ticks | seconds) #REQUIRED>
+
+<!ELEMENT cputime (usertime, systemtime)>
+<!ATTLIST cputime units (seconds) #FIXED "seconds">
+
+<!ELEMENT usertime (#PCDATA)>
+
+<!ELEMENT systemtime (#PCDATA)>
+
+<!ELEMENT hwpceventdata (hwpcevent*)>
+<!ATTLIST hwpceventdata
+          class ( null
+                | PAPI
+                | perfmon
+                ) #REQUIRED
+          version CDATA #IMPLIED
+          domain ( all
+                 | kernel
+                 | user
+                 ) #REQUIRED
+          multiplexed (yes | no) #REQUIRED
+          multiplex_usec CDATA #IMPLIED
+>
+
+<!ELEMENT hwpcevent (#PCDATA)>
+<!ATTLIST hwpcevent
+          type ( preset
+               | native
+               ) #REQUIRED
+          name CDATA #REQUIRED
+          derived (yes | no) #REQUIRED
+>
+
+<!ELEMENT hwpcprofiledata (profileinfo, totalsamples, module+)>
+<!ATTLIST hwpcprofiledata
+          class (itimer | profil | PAPI | perfmon) #REQUIRED
+          version CDATA #IMPLIED
+>
+
+<!ELEMENT profileinfo (profileevent)>
+
+<!ELEMENT profileevent (threshold?)>
+<!ATTLIST profileevent
+          domain ( all
+                 | kernel
+                 | user
+                 ) #REQUIRED
+          type ( preset
+               | native
+               ) #REQUIRED
+          name CDATA #REQUIRED
+          derived (yes | no) #REQUIRED
+>
+
+<!ELEMENT threshold (#PCDATA)>
+
+<!ELEMENT totalsamples (#PCDATA)>
+
+<!ELEMENT module (samples)>
+<!ATTLIST module file CDATA #REQUIRED
+                 offset CDATA #REQUIRED
+>
+
+<!ELEMENT samples (sample*)>
+<!ATTLIST samples pcbase CDATA "16">
+
+<!ELEMENT sample (#PCDATA)>
+<!ATTLIST sample pc CDATA #REQUIRED>

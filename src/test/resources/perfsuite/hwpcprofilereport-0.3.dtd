@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- =========================================
+     NOTE: this is a machine-generated DTD that
+     is still undergoing development.  It is
+     likely to contain errors and omissions.
+     You should regard this as unofficial and
+     untested at this time.
+
+     Comments/feedback/contributions welcome.
+     ========================================= -->
+
+<!ENTITY % machineinfo.dtd
+    SYSTEM "/usr/share/perfsuite/dtds/pshwpc/machineinfo-0.3.dtd">
+
+%machineinfo.dtd;
+
+<!ELEMENT hwpcprofilereport ( date,
+                              hostname,
+                              domainname,
+                              username?,
+                              annotation?,
+                              executioninfo,
+                              hwpcprofile+
+                            )
+>
+<!ATTLIST hwpcprofilereport
+          version CDATA #REQUIRED
+          generator CDATA #IMPLIED
+          xmlns:perfsuite CDATA #IMPLIED
+>
+
+<!ELEMENT date (#PCDATA)>
+
+<!ELEMENT hostname (#PCDATA)>
+
+<!ELEMENT domainname (#PCDATA)>
+
+<!ELEMENT pid (#PCDATA)>
+
+<!ELEMENT thread (#PCDATA)>
+
+<!ELEMENT username (#PCDATA)>
+
+<!ELEMENT annotation (#PCDATA)>
+
+<!ELEMENT executioninfo ( date,
+                          hostname,
+                          domainname,
+                          pid?,
+                          thread?,
+                          username?,
+                          command?,
+                          annotation?,
+                          wallclock,
+                          cputime,
+                          machineinfo
+                        )
+>
+
+<!ELEMENT command (#PCDATA)>
+<!ATTLIST command md5sum CDATA #IMPLIED>
+
+<!ELEMENT wallclock (#PCDATA)>
+<!ATTLIST wallclock units (seconds | ticks) #REQUIRED>
+
+<!ELEMENT cputime (usertime, systemtime)>
+<!ATTLIST cputime units (seconds) #FIXED "seconds">
+
+<!ELEMENT usertime (#PCDATA)>
+
+<!ELEMENT systemtime (#PCDATA)>
+
+<!ELEMENT hwpcprofile ( hwpcevent,
+                        period,
+                        totalsamples,
+                        module+
+                      )
+>
+<!ATTLIST hwpcprofile
+          mapper CDATA #REQUIRED
+>
+
+<!ELEMENT hwpcevent EMPTY>
+<!ATTLIST hwpcevent
+          class CDATA #REQUIRED
+          version CDATA #IMPLIED
+          type (native | preset) #IMPLIED
+          name CDATA #REQUIRED
+          domain (user | kernel | all) #REQUIRED
+>
+
+<!ELEMENT period (#PCDATA)>
+
+<!ELEMENT totalsamples (#PCDATA)>
+
+<!ELEMENT module (file+)>
+<!ATTLIST module
+          name CDATA #REQUIRED
+>
+
+<!ELEMENT file (function+)>
+<!ATTLIST file
+          name CDATA #REQUIRED
+>
+
+<!ELEMENT function (line+)>
+<!ATTLIST function
+          name CDATA #REQUIRED
+>
+
+<!ELEMENT line (#PCDATA)>
+<!ATTLIST line
+          lineno CDATA #REQUIRED
+>

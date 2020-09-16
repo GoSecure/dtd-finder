@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- =========================================
+     NOTE: this is a machine-generated DTD that
+     is still undergoing development.  It is
+     likely to contain errors and omissions.
+     You should regard this as unofficial and
+     untested at this time.
+
+     Comments/feedback/contributions welcome.
+     ========================================= -->
+
+<!ELEMENT machineinfo ( cpucount,
+                        cpuinfo,
+                        memoryinfo,
+                        syspagesize
+                      ) 
+>
+
+<!ELEMENT cpucount (#PCDATA)>
+
+<!ELEMENT cpuinfo ( vendor,
+                    family,
+                    brand?,
+                    model?,
+                    revision,
+                    clockspeed,
+                    cacheinfo,
+                    tlbinfo
+                  ) 
+>
+
+<!ELEMENT vendor (#PCDATA)>
+
+<!ELEMENT family (#PCDATA)>
+
+<!ELEMENT brand (#PCDATA)>
+
+<!ELEMENT model (#PCDATA)>
+
+<!ELEMENT revision (#PCDATA)>
+
+<!ELEMENT clockspeed (#PCDATA)>
+<!ATTLIST clockspeed units (MHz) #FIXED "MHz">
+
+<!ELEMENT cacheinfo (levels, cache*)>
+
+<!ELEMENT levels (#PCDATA)>
+
+<!ELEMENT cache (size, linesize?, associativity)>
+<!ATTLIST cache
+          type CDATA #REQUIRED
+          level CDATA #REQUIRED
+>
+
+<!ELEMENT size (#PCDATA)>
+<!ATTLIST size units (KB | KuOps) #REQUIRED>
+
+<!ELEMENT linesize (#PCDATA)>
+<!ATTLIST linesize units (B) #FIXED "B">
+
+<!ELEMENT associativity (#PCDATA)>
+<!ATTLIST associativity type (set | full) #REQUIRED>
+
+<!ELEMENT tlbinfo (tlb*)>
+
+<!ELEMENT tlb (entries, associativity)>
+<!ATTLIST tlb
+          type ( data
+               | instruction
+               | unified
+               ) #REQUIRED
+          level CDATA #REQUIRED
+>
+
+<!ELEMENT entries (#PCDATA)>
+
+<!ELEMENT memoryinfo (#PCDATA)>
+<!ATTLIST memoryinfo units (MB) "MB">
+
+<!ELEMENT syspagesize (#PCDATA)>
+<!ATTLIST syspagesize units (KB) "KB">

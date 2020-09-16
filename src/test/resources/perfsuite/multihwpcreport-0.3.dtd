@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- =========================================
+     NOTE: this is a machine-generated DTD that
+     is still undergoing development.  It is
+     likely to contain errors and omissions.
+     You should regard this as unofficial and
+     untested at this time.
+
+     Comments/feedback/contributions welcome.
+     ========================================= -->
+
+<!ENTITY % hwpcreport.dtd
+	SYSTEM "/usr/share/perfsuite/dtds/pshwpc/hwpcreport-0.3.dtd">
+%hwpcreport.dtd;
+
+<!ELEMENT multihwpcreport ( hwpcreport* ) >
+<!ATTLIST multihwpcreport
+          version CDATA #REQUIRED
+          generator CDATA #IMPLIED
+          xmlns:perfsuite CDATA #IMPLIED
+>

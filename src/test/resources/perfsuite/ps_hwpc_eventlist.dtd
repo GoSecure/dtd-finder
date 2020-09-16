@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- =========================================
+     NOTE: this is a machine-generated DTD that
+     is still undergoing development.  It is
+     likely to contain errors and omissions.
+     You should regard this as unofficial and
+     untested at this time.
+
+     Comments/feedback/contributions welcome.
+     ========================================= -->
+
+<!ELEMENT ps_hwpc_eventlist (ps_hwpc_event*)>
+<!ATTLIST ps_hwpc_eventlist
+          class ( null
+                | PAPI
+                | perfmon
+                ) #REQUIRED
+
+          domain ( user
+                 | kernel
+                 | all
+                 ) "user"
+>
+
+<!ELEMENT ps_hwpc_event (#PCDATA?)>
+<!ATTLIST ps_hwpc_event
+          type ( preset
+               | native
+               ) #IMPLIED
+          threshold CDATA #IMPLIED
+          name CDATA #IMPLIED
+>
