@@ -1,3 +1,4 @@
+@file:Suppress("JAVA_MODULE_DOES_NOT_EXPORT_PACKAGE")
 
 import com.sun.org.apache.xerces.internal.impl.dtd.*
 import javax.xml.parsers.DocumentBuilderFactory
@@ -251,7 +252,7 @@ class EntityTester {
                     }
                 } catch (e: Exception) {
                     //Failed
-//                    println(" [!] $e.message")
+                    println(" [!] $e.message")
                     ///e.printStackTrace()
                 }
             }

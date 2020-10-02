@@ -1,5 +1,5 @@
+@file:Suppress("JAVA_MODULE_DOES_NOT_EXPORT_PACKAGE")
 
-import com.sun.org.apache.xerces.internal.xni.parser.XMLParseException
 import java.io.File
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
