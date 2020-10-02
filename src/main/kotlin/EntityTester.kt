@@ -252,7 +252,7 @@ class EntityTester {
                     }
                 } catch (e: Exception) {
                     //Failed
-                    println(" [!] $e.message")
+//                    println(" [!] $e.message")
                     ///e.printStackTrace()
                 }
             }

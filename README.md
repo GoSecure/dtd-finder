@@ -1,4 +1,4 @@
-# DTD Finder
+# DTD Finder [![Build Status](https://travis-ci.org/GoSecure/dtd-finder.svg?branch=master)](https://travis-ci.org/GoSecure/dtd-finder)
 
 Identify DTDs on filesystem snapshot and build XXE payloads using those local DTDs.
 
