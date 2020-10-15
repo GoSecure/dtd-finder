@@ -2,7 +2,10 @@
 
 Identify DTDs on filesystem snapshot and build XXE payloads using those local DTDs.
 
-For more information, read the detailed blog post: https://www.gosecure.net/blog/2019/07/16/automating-local-dtd-discovery-for-xxe-exploitation/
+Quick links:
+
+ - [Get the complete files list and XXE Payloads](https://github.com/GoSecure/dtd-finder/tree/master/list)
+ - For more information, [read the detailed blog post](https://www.gosecure.net/blog/2019/07/16/automating-local-dtd-discovery-for-xxe-exploitation/)
 
 ## Building the tool
 
@@ -39,6 +42,14 @@ Testing 9 entities : [%AttributeName, %BeanName, %Boolean, %ClassName, %Integer,
  [+] The entity %RequestPath is injectable
  [+] The entity %RequestScope is injectable
 ...
+
+The CLI tool can be launch against tar files and directories.
+
+```
+$ java -jar dtd-finder-1.0-SNAPSHOT-all.jar /specific/path/with/dtds
+...
+```
+
 
 Report written to weblogic-12-dev.tar-dtd-report.md
 ```
