@@ -70,7 +70,7 @@ class DtdFinder(val reporter:XxeReporter) {
 
 
     fun scanDirectory(directory: File) {
-        println("Scanning direction ${directory.canonicalPath}")
+        println("Scanning directory ${directory.canonicalPath}")
 
         val currentDir = System.getProperty("user.dir")
 
@@ -101,6 +101,8 @@ class DtdFinder(val reporter:XxeReporter) {
      * Path from archive will be considered to be the absolute path from the original filesystem.
      */
     fun scanTarFile(archive:File) {
+        println("Scanning TAR file ${archive.canonicalPath}")
+
         val myTarFile = TarArchiveInputStream(FileInputStream(archive))
 
 
@@ -136,6 +138,21 @@ class DtdFinder(val reporter:XxeReporter) {
 
         myTarFile.close()
     }
+
+    /**
+     * This scan mode is intended to scan mainly single jar.
+     *
+     * @param f Zip file to analyze
+     */
+    fun scanZipFile(f: File) {
+        println("Scanning ZIP file ${f.canonicalPath}")
+        try {
+            analyzingJar(f.readBytes() ,f.name)
+        }
+        catch(e:Exception) {
+            println(" [!] An error occurs when loading the zip/jar file ${f.name}")
+        }
+    }
 }
 
 inline fun isDtd(filename: String): Boolean {
@@ -166,7 +183,10 @@ fun main(args: Array<String>) {
         val dtdFinder = DtdFinder(MarkdownReporter(currentDir, reportName))
 
         if(f.isFile)
-            dtdFinder.scanTarFile(f)
+            if(f.extension != null && (f.extension == "jar" || f.extension == "zip"))
+                dtdFinder.scanZipFile(f)
+            else //Assumes it is a tar file by default
+                dtdFinder.scanTarFile(f)
         else
             dtdFinder.scanDirectory(f)
 
